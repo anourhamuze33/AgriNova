@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -28,8 +29,18 @@ class AuthController extends Controller
             'cin'=>'required|string',
             'password' => 'required|min:8|confirmed'
         ]);
-//required|integer|exists:villes,id
-//table and input of cin
+        //required|integer|exists:villes,id
+        //table and input of cin
+
+        //changer le nom du fichier uplodee to be unique
+        $fileDiplome = $request->file('diplome');
+        $fileNameDiplome = time(). '_' . $fileDiplome->getClientOriginalName();
+        $fileDiplome->store('diplomes', $fileNameDiplome);
+
+        $fileCIN = $request->file('cin');
+        $fileNameCin = time(). '_' . $fileCIN->getClientOriginalName();
+        Storage::disk('local')->putFileAs('cin', $fileCIN, $fileNameCin);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
