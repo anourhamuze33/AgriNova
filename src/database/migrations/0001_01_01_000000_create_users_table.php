@@ -20,7 +20,9 @@ return new class extends Migration
             $table->foreignId('role_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('ville');
+            $table->string('ville_id');
+            $table->integer('annees_experience');
+            $table->float('tarif_horaire');
             $table->string('specialite');
             $table->enum('interventions', ['yes', 'no']);
             $table->text('lienDiplome');
