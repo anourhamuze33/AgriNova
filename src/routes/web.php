@@ -11,4 +11,8 @@ Route::get('/register/form', [AuthController::class, 'showRegister'])->name('reg
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 
-Route::get('/download/{fileName}', [FilesController::class, 'downloadDiplome'])->name('file.diplome.download');
+Route::get('/download/diplome/{fileName}', [FilesController::class, 'downloadDiplome'])->name('file.diplome.download');
+Route::get('/show/diplome/{fileName}', [FilesController::class, 'showDiplome'])->name('file.diplome.show');
+
+Route::get('/show/cin/{fileName}', [FilesController::class, 'showCIN'])->name('file.CIN.show');
+Route::get('/download/cin/{fileName}', [FilesController::class, 'downloadCIN'])->name('file.cin.download');
