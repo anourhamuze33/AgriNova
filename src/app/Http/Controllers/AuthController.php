@@ -27,7 +27,6 @@ class AuthController extends Controller
     { 
 
         $this->service->register($request);
-
         return redirect()->route('index');
     }
 }

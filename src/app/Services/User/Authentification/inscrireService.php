@@ -5,6 +5,7 @@ namespace App\Services\User\Authentification;
 use App\DTOs\InscriptionDTO;
 use App\Http\Requests\StoreUser;
 use App\Models\User;
+use App\Repositories\Demande\DemandeRepository;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -12,9 +13,11 @@ use Illuminate\Support\Facades\Storage;
 class inscrireService
 {
     protected UserRepository $userRepository;
-    public function __construct(UserRepository $userRepository)
+    protected DemandeRepository $demandeRepository;
+    public function __construct(UserRepository $userRepository, DemandeRepository $demandeRepository)
     {
         $this->userRepository = $userRepository;
+        $this->demandeRepository = $demandeRepository;
     }
     public function register(StoreUser $data)
     {
@@ -41,6 +44,13 @@ class inscrireService
         $dto['password'] = Hash::make($dto['password']);
 
         $user = $this->userRepository->create($dto);
+        $this->demandeRepository->create([
+            'name' => $user->name,
+            'description' => 'become ouvrier',
+            'type' => 'be_ouvrier',
+            'status' => 'pending',
+            'user_id' => $user->id
+        ]);
         return $user;
     }
 }
