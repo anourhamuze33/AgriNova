@@ -1264,7 +1264,7 @@
                                 <div class="doc-preview">
                                     <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=70&fit=crop"
                                         alt="Diplôme">
-                                    <span class="doc-type-badge">📄 Diplôme</span>
+                                    <span class="doc-type-badge">Diplôme</span>
                                     <button class="doc-view-btn"
                                         onclick="openModal('Diplôme — Mohamed Alami','https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80','PDF · 1.2 MB · Soumis le 14 Mars 2026')">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
