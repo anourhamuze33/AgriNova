@@ -1262,11 +1262,11 @@
                             <!-- Diplôme -->
                             <div class="doc-card">
                                 <div class="doc-preview">
-                                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=70&fit=crop"
+                                    <img src="../assets/docs.jpg"
                                         alt="Diplôme">
                                     <span class="doc-type-badge">Diplôme</span>
-                                    <button class="doc-view-btn"
-                                        onclick="openModal('Diplôme — Mohamed Alami','https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80','PDF · 1.2 MB · Soumis le 14 Mars 2026')">
+                                    <a href="{{route('file.Diplome.show', $user->lienDiplome)}}" target="_blank">
+                                    <button class="doc-view-btn">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1275,11 +1275,12 @@
                                         </svg>
                                         Voir
                                     </button>
+                                    </a>
                                 </div>
                                 <div class="doc-info">
                                     <div class="doc-title">Diplôme d'Agriculture</div>
                                     <div class="doc-meta">
-                                        <span class="doc-size">PDF · 1.2 MB</span>
+                                        <span class="doc-size">{{strtoupper($user->diplome_info[0])}} · {{strtoupper($user->diplome_info[1])}}</span>
                                         <span class="doc-status doc-ok">Soumis</span>
                                     </div>
                                 </div>
@@ -1287,11 +1288,11 @@
                             <!-- CIN -->
                             <div class="doc-card">
                                 <div class="doc-preview">
-                                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&q=70&fit=crop"
+                                    <img class="img" src="../assets/docs.jpg"
                                         alt="CIN">
-                                    <span class="doc-type-badge">🪪 CIN</span>
-                                    <button class="doc-view-btn"
-                                        onclick="openModal('Carte d\'Identité — Mohamed Alami','https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80','JPG · 0.8 MB · Soumis le 14 Mars 2026')">
+                                    <span class="doc-type-badge">CIN</span>
+                                    <a href="{{route('file.CIN.show', $user->lienCIN)}}" target="_blank">
+                                    <button class="doc-view-btn">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1300,11 +1301,12 @@
                                         </svg>
                                         Voir
                                     </button>
+                                    </a>
                                 </div>
                                 <div class="doc-info">
                                     <div class="doc-title">Carte d'Identité Nationale</div>
                                     <div class="doc-meta">
-                                        <span class="doc-size">JPG · 0.8 MB</span>
+                                        <span class="doc-size">{{strtoupper($user->cin_info[0])}} · {{strtoupper($user->cin_info[1])}}</span>
                                         <span class="doc-status doc-ok">Soumis</span>
                                     </div>
                                 </div>

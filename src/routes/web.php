@@ -16,7 +16,7 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
 
 Route::get('/download/diplome/{fileName}', [FilesController::class, 'downloadDiplome'])->name('file.diplome.download');
-Route::get('/show/diplome/{fileName}', [FilesController::class, 'showDiplome'])->name('file.diplome.show');
+Route::get('/show/diplome/{fileName}', [FilesController::class, 'showDiplome'])->name('file.Diplome.show');
 
 Route::get('/show/cin/{fileName}', [FilesController::class, 'showCIN'])->name('file.CIN.show');
 Route::get('/download/cin/{fileName}', [FilesController::class, 'downloadCIN'])->name('file.cin.download');

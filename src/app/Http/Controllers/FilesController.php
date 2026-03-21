@@ -47,7 +47,7 @@ class FilesController extends Controller
     }
     public function showDiplome($fileName)
     {
-        $filePath = storage_path('app/diplomes/' . $fileName);
+        $filePath = storage_path('app/private/diplomes/' . $fileName);
 
         if (!file_exists($filePath)) {
             abort(404, 'File not found.');
