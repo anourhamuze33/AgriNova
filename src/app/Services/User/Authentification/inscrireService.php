@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUser;
 use App\Models\User;
 use App\Repositories\Demande\DemandeRepository;
 use App\Repositories\User\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -51,6 +52,7 @@ class inscrireService
             'status' => 'pending',
             'user_id' => $user->id
         ]);
+        Auth::login($user);
         return $user;
     }
 }
