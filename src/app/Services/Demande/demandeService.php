@@ -2,7 +2,10 @@
 
 namespace App\Services\Demande;
 
+use App\Models\Demande;
+use App\Models\User;
 use App\Repositories\Demande\DemandeRepository;
+use Dflydev\DotAccessData\Data;
 
 class demandeService
 {
@@ -12,8 +15,8 @@ class demandeService
         $this->demandeRepository = $demandeRepository;
     }
     
-    // public function createDemande()
-    // {
-    //     $this->demandeRepository->create();
-    // }
+    public function updateBeOuvrier(User $user, Demande $demande, array $data)
+    {
+        $this->demandeRepository->updateStatus($demande, $data);
+    }
 }

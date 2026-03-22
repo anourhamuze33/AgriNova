@@ -1233,7 +1233,7 @@
             <!-- Workers list -->
             <div class="workers-list" id="workersList">
                 @foreach($usersDemanding as $user)
-                <div class="worker-card" data-status="pending" data-name="{{$user->name}}">
+                <div class="worker-card" data-name="{{$user->name}}">
                     <div class="wc-top" onclick="toggleCard(this)">
                         <div class="wc-avatar">{{strtoupper(substr($user->name, 0, 2))}}</div>
                         <div class="wc-info">
@@ -1249,7 +1249,11 @@
                             </div>
                         </div>
                         <span class="wc-role-badge role-agri">{{$user->role_id}}</span>
-                        <span class="wc-status-badge status-pending">En attente</span>
+                        <span class="wc-status-badge 
+                        {{ $user->demandes[0]->status == 'approved' ? 'status-approved' : 
+                        ($user->demandes[0]->status == 'rejected' ? 'status-rejected' : 'status-pending') }}">
+                            {{ $user->demandes[0]->status }}
+                        </span>
                         <div class="wc-toggle">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1262,25 +1266,25 @@
                             <!-- Diplôme -->
                             <div class="doc-card">
                                 <div class="doc-preview">
-                                    <img src="../assets/docs.jpg"
-                                        alt="Diplôme">
+                                    <img src="../assets/docs.jpg" alt="Diplôme">
                                     <span class="doc-type-badge">Diplôme</span>
                                     <a href="{{route('file.Diplome.show', $user->lienDiplome)}}" target="_blank">
-                                    <button class="doc-view-btn">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        Voir
-                                    </button>
+                                        <button class="doc-view-btn">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Voir
+                                        </button>
                                     </a>
                                 </div>
                                 <div class="doc-info">
                                     <div class="doc-title">Diplôme d'Agriculture</div>
                                     <div class="doc-meta">
-                                        <span class="doc-size">{{strtoupper($user->diplome_info[0])}} · {{strtoupper($user->diplome_info[1])}}</span>
+                                        <span class="doc-size">{{strtoupper($user->diplome_info[0])}} ·
+                                            {{strtoupper($user->diplome_info[1])}}</span>
                                         <span class="doc-status doc-ok">Soumis</span>
                                     </div>
                                 </div>
@@ -1288,45 +1292,71 @@
                             <!-- CIN -->
                             <div class="doc-card">
                                 <div class="doc-preview">
-                                    <img class="img" src="../assets/docs.jpg"
-                                        alt="CIN">
+                                    <img class="img" src="../assets/docs.jpg" alt="CIN">
                                     <span class="doc-type-badge">CIN</span>
                                     <a href="{{route('file.CIN.show', $user->lienCIN)}}" target="_blank">
-                                    <button class="doc-view-btn">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        Voir
-                                    </button>
+                                        <button class="doc-view-btn">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Voir
+                                        </button>
                                     </a>
                                 </div>
                                 <div class="doc-info">
                                     <div class="doc-title">Carte d'Identité Nationale</div>
                                     <div class="doc-meta">
-                                        <span class="doc-size">{{strtoupper($user->cin_info[0])}} · {{strtoupper($user->cin_info[1])}}</span>
+                                        <span class="doc-size">{{strtoupper($user->cin_info[0])}} ·
+                                            {{strtoupper($user->cin_info[1])}}</span>
                                         <span class="doc-status doc-ok">Soumis</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="wc-actions">
+                        @if($user->demandes[0]->status == 'approved')
+                        <div class="wc-decided-banner approved">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="width:18px;height:18px;flex-shrink:0">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Compte approuvé à l'instant{{$user->demandes[0]->notes ? ' · Note : ' .
+                            $user->demandes[0]->notes : ''}} — Utilisateur désormais actif
+                        </div>
+
+                        @elseif($user->demandes[0]->status == 'rejected')
+                        <div class="wc-decided-banner rejected">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="width:18px;height:18px;flex-shrink:0">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Compte refusé à l'instant{{$user->demandes[0]->notes ? ' · Note : ' .
+                            $user->demandes[0]->notes : ''}} — Notification envoyée à
+                            l'utilisateur
+                        </div>
+                        @else
+                        <form action="{{route('acceptOrRefuse', $user)}}" method="POST" class="wc-actions">
+                            @csrf
                             <div class="wc-actions-left">
                                 <div class="wc-note-label">Note administrative (optionnel)</div>
-                                <textarea class="wc-note"
+                                <textarea class="wc-note" name="note"
                                     placeholder="Ajouter une remarque sur ce dossier..."></textarea>
                             </div>
+                            <input type="hidden" name="type" id="hiddenType" value="">
                             <div class="wc-actions-right">
-                                <button class="btn-reject" onclick="updateStatus(this,'rejected')">
+                                <button type="submit" class="btn-reject btnType" data-type="rejected">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                     Refuser
                                 </button>
-                                <button class="btn-approve" onclick="updateStatus(this,'approved')">
+
+                                <button type="submit" class="btn-approve btnType" data-type="approved">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 13l4 4L19 7" />
@@ -1334,7 +1364,8 @@
                                     Approuver le compte
                                 </button>
                             </div>
-                        </div>
+                        </form>
+                        @endif
                     </div>
                 </div>
 
@@ -1715,6 +1746,15 @@
     </div>
 
     <script>
+        const btns = document.querySelectorAll(".btnType");
+const hiddenType = document.querySelector('#hiddenType');
+
+btns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        hiddenType.value = btn.dataset.type;
+    });
+});
+
         // Toggle worker card expand/collapse
 function toggleCard(topEl) {
   const card = topEl.closest('.worker-card');
@@ -1729,32 +1769,6 @@ function toggleCard(topEl) {
   if (!isOpen) {
     docs.classList.add('open');
     toggle.classList.add('open');
-  }
-}
-
-// Approve / Reject
-function updateStatus(btn, action) {
-  const card = btn.closest('.worker-card');
-  const statusBadge = card.querySelector('.wc-status-badge');
-  const actionsDiv = card.querySelector('.wc-actions');
-  const note = card.querySelector('.wc-note')?.value || '';
-
-  if (action === 'approved') {
-    statusBadge.className = 'wc-status-badge status-approved';
-    statusBadge.textContent = '✅ Approuvé';
-    card.dataset.status = 'approved';
-    actionsDiv.innerHTML = `<div class="wc-decided-banner approved">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      Compte approuvé à l'instant${note ? ' · Note : ' + note : ''} — Utilisateur désormais actif
-    </div>`;
-  } else {
-    statusBadge.className = 'wc-status-badge status-rejected';
-    statusBadge.textContent = '❌ Refusé';
-    card.dataset.status = 'rejected';
-    actionsDiv.innerHTML = `<div class="wc-decided-banner rejected">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      Compte refusé à l'instant${note ? ' · Motif : ' + note : ''} — Notification envoyée à l'utilisateur
-    </div>`;
   }
 }
 

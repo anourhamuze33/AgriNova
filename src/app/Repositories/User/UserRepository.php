@@ -16,10 +16,15 @@ class UserRepository
     {
         $users = User::with('demandes')
             ->whereHas('demandes', function ($q) {
-                $q->where('status', 'pending')
-                ->where('type', 'be_ouvrier');
+                $q->where('type', 'be_ouvrier');
             })->get();
 
         return $users;
+    }
+
+    public function getDemande(User $user)
+    {
+        $demand = $user->demandes()->where('type', 'be_ouvrier');
+        return $demand;
     }
 }

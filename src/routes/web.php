@@ -13,6 +13,7 @@ Route::get('/register/form', [AuthController::class, 'showRegister'])->name('reg
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::post('/admin/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
 
 
 Route::get('/download/diplome/{fileName}', [FilesController::class, 'downloadDiplome'])->name('file.diplome.download');
