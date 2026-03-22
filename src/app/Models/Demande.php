@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Demande extends Model
 {
-    protected $fillable = ['name','description','status', 'type', 'user_id'];
+    protected $fillable = ['name','description','status', 'type', 'user_id', 'notes'];
 
     public function user()
     {
