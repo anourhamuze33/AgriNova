@@ -52,7 +52,6 @@ class inscrireService
             'status' => 'pending',
             'user_id' => $user->id
         ]);
-        Auth::login($user);
         return $user;
     }
 }

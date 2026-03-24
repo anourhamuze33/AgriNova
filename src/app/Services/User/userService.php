@@ -7,14 +7,15 @@ use Illuminate\Support\Facades\Auth;
 
 class userService
 {
-    public static function getLogedUser():User
+    public static function getLogedUser()
     {
         $user_id = Auth::id();
         if($user_id)
             {
                 $user = User::find($user_id);
+                return $user;
             }
-        return $user;
+            return;
     }
 
 }

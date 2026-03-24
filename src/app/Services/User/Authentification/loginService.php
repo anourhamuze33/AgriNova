@@ -12,20 +12,17 @@ class loginService
     public function login(loginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-        
+        $user = User::where('email', $credentials['email'])->first();
+
         if (Auth::attempt($credentials)) {
-            
-            $user = userService::getLogedUser();
             $demande = $user->demandes()->where('type', 'be_ouvrier')->first();
             
             if ($demande && $demande->status !== 'approved') {
-                
-                Auth::logout();
-                
                 return back()->withErrors([
                     'email' => 'Votre demande n\'est pas encore approuvée.',
                     ]);
             }
+            Auth::login($user);
             return redirect()->route('admin.index');
         }
         return back()->withErrors([

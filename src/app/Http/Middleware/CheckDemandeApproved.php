@@ -17,15 +17,7 @@ class CheckDemandeApproved
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
 
-        $user = userService::getLogedUser();
-        $demande = $user->demandes()->latest()->first();
-        if (!$demande || $demande->status !== 'approved') {
-            Auth::logout();
-            return redirect()->route('login')
-                ->withErrors(['email' => 'Compte non approuvé']);
-        }
         return $next($request);
     }
 }

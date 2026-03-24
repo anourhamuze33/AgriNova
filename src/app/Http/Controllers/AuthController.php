@@ -8,7 +8,9 @@ use App\Http\Requests\StoreUser;
 use App\Models\User;
 use App\Services\User\Authentification\inscrireService;
 use App\Services\User\Authentification\loginService;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
