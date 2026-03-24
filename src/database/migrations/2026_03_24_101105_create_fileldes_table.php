@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fileldes', function (Blueprint $table) {
+        Schema::create('fieldes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId('ville_id')->constrained('villes')->onDelete('cascade');
+            $table->float('size');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fileldes');
+        Schema::dropIfExists('fieldes');
     }
 };
