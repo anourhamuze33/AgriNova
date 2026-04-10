@@ -50,7 +50,8 @@ class inscrireService
             'description' => 'become ouvrier',
             'type' => 'be_ouvrier',
             'status' => 'pending',
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'notes' => 'be Ouvrier',
         ]);
         return $user;
     }

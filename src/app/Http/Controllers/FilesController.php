@@ -45,6 +45,7 @@ class FilesController extends Controller
         $type = File::mimeType($fullPath);
         return response($file, 200)->header('Content-Type', $type);
     }
+    
     public function showDiplome($fileName)
     {
         $filePath = storage_path('app/private/diplomes/' . $fileName);

@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Field extends Model
 {
         protected $fillable = ['name','ville_id','size'];
+        
+        public function cultures()
+        {
+                return $this->hasMany(Culture::class);
+        }
 }

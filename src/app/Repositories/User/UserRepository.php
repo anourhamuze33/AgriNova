@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Models\Demande;
+use App\Models\Role;
 use App\Models\User;
 
 class UserRepository
@@ -26,5 +27,11 @@ class UserRepository
     {
         $demand = $user->demandes()->where('type', 'be_ouvrier');
         return $demand;
+    }
+
+    public function getUsersWithRoles()
+    {
+        $roles = Role::with('users')->get();
+        return $roles;
     }
 }

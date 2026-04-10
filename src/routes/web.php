@@ -2,13 +2,19 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CropController;
+use App\Http\Controllers\CultureController;
+use App\Http\Controllers\FieldController;
 use App\Http\Controllers\FilesController;
 use Illuminate\Support\Facades\Route;
-use PHPUnit\Metadata\Group;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('crops.index');
 })->name('index');
+
+Route::Resource('fields', FieldController::class);
+Route::Resource('crops', CropController::class);
+Route::Resource('cultures', CultureController::class);
 
 Route::get('/register/form', [AuthController::class, 'showRegister'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
