@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Repositories\CultureRepository;
@@ -31,6 +32,18 @@ class CultureService
     public function getCulture($id)
     {
         return $this->cultureRepository->findById($id);
+    }
+
+    public function nextStep($culture)
+    {
+        $steps = ['planting', 'treatment', 'growth', 'harvest', 'done'];
+
+        $currentIndex = array_search($culture->cycle, $steps);
+
+        if ($currentIndex < count($steps) - 1) {
+            $culture->cycle = $steps[$currentIndex + 1];
+            $culture->save();
+        }
     }
 
     public function createCulture($request)

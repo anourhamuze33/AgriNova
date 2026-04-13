@@ -9,7 +9,7 @@ class CultureRepository
 {
     public function getAll()
     {
-        return Culture::with(['field', 'user'])->get();
+        return Culture::with(['typeCulture', 'field', 'user'])->get();
     }
 
     public function getNameType()
@@ -23,8 +23,16 @@ class CultureRepository
 
     public function findById($id)
     {
-        return Culture::findOrFail($id);
+        return Culture::with(['field', 'user', 'typeCulture'])->findOrFail($id);
     }
+
+    // public function updateCycle($culture)
+    // {
+    //     return $culture->update([
+    //         'cycle'=>
+    //     ])
+
+    // }
 
     public function create(array $data)
     {
@@ -35,7 +43,7 @@ class CultureRepository
     {
         $typeCylture = Type_cultures::find($id);
         $typeCylture->update([
-            'imgUrl'=> $img,
+            'imgUrl' => $img,
         ]);
         return $typeCylture;
     }

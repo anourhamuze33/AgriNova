@@ -307,25 +307,22 @@ select.m-inp{appearance:auto;cursor:pointer;}
     <div class="t-head">
       <div class="th">Culture <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg></div>
       <div class="th">Parcelle</div>
-      <div class="th">Cycle</div>
       <div class="th">Saison</div>
       <div class="th">Plantation</div>
       <div class="th">Recolte</div>
       <div class="th">Statut</div>
       <div class="th" style="justify-content:flex-end">Actions</div>
     </div>
-
-    <!-- row 1 -->
-    <div class="t-row" onclick="openEdit(1)">
+    @foreach($cultures as $culture)
+    <div class="t-row" onclick="openEdit({{$culture->id}})">
       <div class="col-name">
-        <div class="c-thumb"><img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=80&q=80&fit=crop" alt="Tomates"></div>
-        <div><div class="c-crop-name">Tomates Roma</div><div class="c-crop-id">Crop #001 · Solanum lycopersicum</div></div>
+        <div class="c-thumb"><img src="{{asset('storage/Cultures/' . $culture->typeCulture->imgUrl)}}" alt="{{$culture->typeCulture->name}}"></div>
+        <div><div class="c-crop-name">{{$culture->typeCulture->name}}</div><div class="c-crop-id">{{$culture->typeCulture->type}}</div></div>
       </div>
-      <div class="col-field"><span class="f-dot da"></span>Parcelle A</div>
-      <div class="col-cycle">Cycle C1-2026</div>
-      <div><span class="s-pill sp-spring">🌸 Printemps</span></div>
-      <div><div class="col-date">15 Jan 2026</div><div class="col-date-note">il y a 70j</div></div>
-      <div><div class="col-date">22 Mar 2026</div><div class="col-date-note urgent">J-6 🚨</div></div>
+      <div class="col-field"><span class="f-dot da"></span>{{$culture->field->name}}</div>
+      <div><span class="s-pill sp-spring">{{ucfirst($culture->season)}}</span></div>
+      <div><div class="col-date">{{$culture->planting_date->format('d M Y')}}</div><div class="col-date-note">{{$culture->planting_date->diffInDays()}}</div></div>
+      <div><div class="col-date">{{$culture->harvest_date->format('d M Y')}}</div></div>
       <div>
         <span class="st-badge stb-harvest">Recolte</span>
         <div class="prog-bar"><div class="prog-fill pf-harvest" style="width:78%"></div></div>
@@ -337,6 +334,7 @@ select.m-inp{appearance:auto;cursor:pointer;}
         <button class="a-btn del" onclick="openDel('Tomates Roma')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
       </div>
     </div>
+    @endforeach
 
     <!-- row 2 -->
     <div class="t-row" onclick="openEdit(2)">

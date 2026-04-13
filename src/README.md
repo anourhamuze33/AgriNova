@@ -1,59 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AgriNova - Application Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Presentation
 
-## About Laravel
+AgriNova est une application de gestion agricole destinee a digitaliser les operations d'une exploitation. Le projet suit une architecture MVC avec Laravel pour organiser les couches `Model`, `View` et `Controller`, faciliter la maintenance et permettre une evolution progressive du systeme.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Objectifs
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Planifier les cultures et les recoltes
+- Centraliser les donnees de production
+- Suivre les parcelles et les cycles culturaux
+- Encadrer les acces via des roles utilisateurs
+- Poser une base evolutive pour les stocks, equipements et personnel
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Fonctionnalites presentes dans le depot
 
-## Learning Laravel
+- Gestion des parcelles (`fields`)
+- Gestion des types de culture
+- Gestion des cultures avec cycle, saison, dates et quantite prevue
+- Gestion des utilisateurs et des roles
+- Processus de demande/validation pour certains profils
+- Interface Blade Laravel pour plusieurs vues principales
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Fonctionnalites prevues par le cahier des charges
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Gestion complete des recoltes et des rendements
+- Gestion des stocks, entrees/sorties et alertes
+- Gestion des equipements et historique des couts
+- Gestion du personnel, des taches et des responsabilites
+- Notifications metier
+- Tableaux de bord par role
 
-## Laravel Sponsors
+## Architecture
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Le projet repose sur :
 
-### Premium Partners
+- `app/Models` pour les entites metier
+- `app/Http/Controllers` pour l'orchestration des actions utilisateur
+- `app/Services` et `app/Repositories` pour separer la logique metier et l'acces aux donnees
+- `resources/views` pour les vues Blade
+- `database/migrations` pour la structure de la base
+- `routes/web.php` pour les routes HTTP
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Modules observes
 
-## Contributing
+### Parcelles
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Table principale : `fields`
+- Donnees : nom, ville, taille
+- Controleur : `FieldController`
 
-## Code of Conduct
+### Cultures
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Table principale : `cultures`
+- Donnees : type de culture, parcelle, cycle, saison, dates, statut, quantite prevue, utilisateur
+- Controleur : `CultureController`
 
-## Security Vulnerabilities
+### Types de culture
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Table principale : `type_cultures`
+- Donnees : type, nom, image
 
-## License
+### Utilisateurs et roles
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Tables principales : `users`, `roles`, `user_role`
+- Gestion d'acces et rattachement a des roles
+
+### Demandes
+
+- Table principale : `demandes`
+- Utilisee pour la validation d'acces/metiers avec statut et notes
+
+## Installation locale
+
+### Prerequis
+
+- PHP 8.x
+- Composer
+- MySQL ou SQLite pour le developpement
+- Node.js si compilation front necessaire
+
+### Etapes
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
+
+Si vous utilisez Vite :
+
+```bash
+npm install
+npm run dev
+```
+
+## Base de donnees
+
+Le dossier [../docs](C:/Users/Youcode/Desktop/Agrnova/docs) contient :
+
+- un script SQL MySQL
+- un diagramme de classes
+- un diagramme de cas d'utilisation
+- un diagramme ERD
+
+## Remarque importante
+
+Le cahier des charges decrit un perimetre plus large que l'etat courant du code. La base actuelle est exploitable pour demarrer la gestion des cultures, mais plusieurs CRUD et modules strategiques restent a completer pour atteindre la version finale attendue.

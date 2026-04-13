@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\cultureStore;
+use App\Models\Culture;
 use App\Services\CultureService;
 use App\Services\FieldService;
 use App\Services\User\userService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class CultureController extends Controller
 {
@@ -22,9 +25,10 @@ class CultureController extends Controller
 
     public function index()
     {
-        return view('cultures.index');
+        $cultures = $this->cultureService->getAllCultures();
+        return view('cultures.index', compact('cultures'));
     }
-    
+
     public function create()
     {
         $rolesWithUsers = $this->userService->getUsersWithRole();
@@ -35,7 +39,19 @@ class CultureController extends Controller
 
     public function show($id)
     {
-        
+        $culture = $this->cultureService->getCulture($id);
+        $steps = ['planting', 'treatment', 'growth', 'harvest', 'done'];
+
+        $currentIndex = array_search($culture->cycle, $steps);
+        $progress = round((($currentIndex + 1) / count($steps)) * 100);
+        $daysLeft = Carbon::now()->diffInDays($culture->harvest_date, false);
+        return view('cultures.show', compact('culture', 'daysLeft', 'progress'));
+    }
+
+    public function suivantEtape(Culture $culture)
+    {
+        $this->cultureService->nextStep($culture);
+        return redirect()->back();
     }
 
     public function store(cultureStore $request)
@@ -56,7 +72,6 @@ class CultureController extends Controller
             'status' => 'sometimes|string',
             'user_id' => 'sometimes|exists:users,id',
         ]);
-
     }
 
     public function destroy($id)

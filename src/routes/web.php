@@ -9,12 +9,13 @@ use App\Http\Controllers\FilesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('crops.index');
+    return view('welcome');
 })->name('index');
 
 Route::Resource('fields', FieldController::class);
 Route::Resource('crops', CropController::class);
 Route::Resource('cultures', CultureController::class);
+Route::patch('/cultures/next/{culture}', [CultureController::class, 'suivantEtape'])->name('cultures.next');
 
 Route::get('/register/form', [AuthController::class, 'showRegister'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
