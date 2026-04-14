@@ -9,7 +9,19 @@ class CultureRepository
 {
     public function getAll()
     {
-        return Culture::with(['typeCulture', 'field', 'user'])->get();
+        return Culture::with(['typeCulture', 'field', 'user'])->paginate(10);
+    }
+
+    public function getStats()
+    {
+        return [
+            'total' => Culture::count(),
+            'planting' => Culture::where('cycle', 'planting')->count(),
+            'growth' => Culture::where('cycle', 'growth')->count(),
+            'treatment' => Culture::where('cycle', 'treatment')->count(),
+            'harvest' => Culture::where('cycle', 'harvest')->count(),
+            'done' => Culture::where('cycle', 'done')->count()
+        ];
     }
 
     public function getNameType()
@@ -23,7 +35,7 @@ class CultureRepository
 
     public function findById($id)
     {
-        return Culture::with(['field', 'user', 'typeCulture'])->findOrFail($id);
+        return Culture::with(['field.ville', 'user', 'typeCulture'])->findOrFail($id);
     }
 
     // public function updateCycle($culture)

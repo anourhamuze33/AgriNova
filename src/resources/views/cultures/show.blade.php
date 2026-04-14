@@ -1425,7 +1425,7 @@
             <!-- HERO -->
             <div class="hero">
                 <div class="hero-img"
-                    style="background:url('{{ asset('storage/Cultures/' . $culture->typeCulture->imgUrl) }}') center/cover;">
+                    style="background:url('{{ $culture->typeCulture->imgUrl ? asset('storage/Cultures/' . $culture->typeCulture->imgUrl) :  asset('assets/unknowing.png')}}') center/cover;">
                     ></div>
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
@@ -1672,59 +1672,6 @@
                         </div>
                     </div>
 
-                    <!-- Activité / Timeline -->
-                    <div class="panel">
-                        <div class="panel-head">
-                            <span class="panel-title">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Historique des actions
-                            </span>
-                        </div>
-                        <div class="panel-body">
-                            <div class="timeline">
-                                <div class="tl-item">
-                                    <div class="tl-dot g" style="position:relative;"></div>
-                                    <div class="tl-body">
-                                        <div class="tl-text">Culture passée en phase <span
-                                                class="tl-badge tb-g">Récolte</span></div>
-                                        <div class="tl-time">16 Mar 2026 · 09:14 · Mohamed Alami</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot a" style="position:relative;"></div>
-                                    <div class="tl-body">
-                                        <div class="tl-text">Traitement pesticide appliqué <span
-                                                class="tl-badge tb-a">Traitement</span></div>
-                                        <div class="tl-time">01 Mar 2026 · 07:30 · Karim Benali</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot g" style="position:relative;"></div>
-                                    <div class="tl-body">
-                                        <div class="tl-text">Irrigation automatique activée — débit 3L/h/plant</div>
-                                        <div class="tl-time">20 Fév 2026 · 06:00 · Système</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot b" style="position:relative;"></div>
-                                    <div class="tl-body">
-                                        <div class="tl-text">Culture passée en phase Croissance</div>
-                                        <div class="tl-time">10 Fév 2026 · 10:22 · Mohamed Alami</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot g" style="position:relative;"></div>
-                                    <div class="tl-body">
-                                        <div class="tl-text">Semis effectué — 850 plants installés en Parcelle A</div>
-                                        <div class="tl-time">15 Jan 2026 · 08:00 · Mohamed Alami</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </div><!-- /left col -->
 
@@ -1740,18 +1687,28 @@
                             </svg>
                         </div>
                         <div class="cd-bar" style="flex:1;">
+                            @if($progress === 100.0)
                             <div style="display:flex;justify-content:space-between;margin-bottom:.25rem;">
-                                <span style="font-size:.72rem;font-weight:600;color:var(--muted);">Récolte prévue le 22
-                                    Mar 2026</span>
+                                <span style="font-size:.72rem;font-weight:600;color:var(--muted);">Récolte Terminé le {{$culture->harvest_date->format('d M Y')}}</span>
                             </div>
                             <div style="display:flex;align-items:baseline;gap:.375rem;">
-                                <span class="cd-num">6</span>
+                                <span class="cd-num">0</span>
+                                <span style="font-size:.8rem;color:var(--amber);font-weight:700;">Done</span>
+                            </div>
+                            @else
+                            <div style="display:flex;justify-content:space-between;margin-bottom:.25rem;">
+                                <span style="font-size:.72rem;font-weight:600;color:var(--muted);">Récolte prévue le {{$culture->harvest_date->format('d M Y')}}</span>
+                            </div>
+                            <div style="display:flex;align-items:baseline;gap:.375rem;">
+                                <span class="cd-num">{{$daysLeft}}</span>
                                 <span style="font-size:.8rem;color:var(--amber);font-weight:700;">jours restants</span>
                             </div>
+                            @endif
+
                             <div class="cd-bar-track">
-                                <div class="cd-bar-fill" style="width:92%"></div>
+                                <div class="cd-bar-fill" style="width:{{$progress}}%"></div>
                             </div>
-                            <div style="font-size:.65rem;color:var(--muted);margin-top:.25rem;">92% du cycle écoulé
+                            <div style="font-size:.65rem;color:var(--muted);margin-top:.25rem;">{{$progress}}% du cycle écoulé
                             </div>
                         </div>
                     </div>
@@ -1760,28 +1717,24 @@
                     <div class="weather-card">
                         <div class="wc-top">
                             <div class="wc-left">
-                                <div class="wc-loc">📍 El Haouz, Marrakech</div>
-                                <div class="wc-temp">24°C</div>
-                                <div class="wc-desc">Ensoleillé · Idéal pour la récolte</div>
+                                <div class="wc-loc">{{ $weather['name'] }}</div>
+                                <div class="wc-temp">{{ round($weather['main']['temp']) }}°C</div>
+                                <div class="wc-desc">{{ ucfirst($weather['weather'][0]['description']) }}</div>
                             </div>
-                            <div class="wc-emoji">☀️</div>
+                            <div class="wc-emoji">{{ $emoji }}</div>
                         </div>
                         <div class="wc-grid">
                             <div class="wc-item">
                                 <div class="wc-item-lbl">Humidité</div>
-                                <div class="wc-item-val">38%</div>
+                                <div class="wc-item-val">{{ $weather['main']['humidity'] }}%</div>
                             </div>
                             <div class="wc-item">
                                 <div class="wc-item-lbl">Vent</div>
-                                <div class="wc-item-val">14 km/h</div>
+                                <div class="wc-item-val">{{ $weather['wind']['speed'] }} km/h</div>
                             </div>
                             <div class="wc-item">
                                 <div class="wc-item-lbl">Pluie prévue</div>
-                                <div class="wc-item-val">0 mm</div>
-                            </div>
-                            <div class="wc-item">
-                                <div class="wc-item-lbl">UV</div>
-                                <div class="wc-item-val">Élevé</div>
+                                <div class="wc-item-val">{{ $weather['rain']['1h'] ?? 0 }} mm</div>
                             </div>
                         </div>
                         <div class="wc-advice">
@@ -1789,30 +1742,25 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                             </svg>
-                            <span><strong>Conseil agronomique :</strong> Conditions idéales pour la récolte cette
-                                semaine. Évitez la chaleur de mi-journée — récoltez tôt le matin.</span>
+                            <span>
+                                <strong>Conseil agronomique :</strong> {{ $advice }}
+                            </span>
                         </div>
                     </div>
 
                     <!-- Infos de la culture -->
                     <div class="info-card">
                         <div class="ic-head"><span>Informations culture</span></div>
-                        <div class="ic-row"><span class="ic-key">Type</span><span class="ic-val">Tomates Roma</span>
+                        <div class="ic-row"><span class="ic-key">Name</span><span class="ic-val">{{ucfirst($culture->typeCulture->name)}}</span>
                         </div>
-                        <div class="ic-row"><span class="ic-key">Parcelle</span><span class="ic-val">Parcelle A —
-                                Nord</span></div>
-                        <div class="ic-row"><span class="ic-key">Cycle</span><span class="ic-val">C1-2026</span></div>
-                        <div class="ic-row"><span class="ic-key">Saison</span><span class="ic-val">🌸 Printemps
-                                2026</span></div>
-                        <div class="ic-row"><span class="ic-key">Date semis</span><span class="ic-val">15 Jan
-                                2026</span></div>
-                        <div class="ic-row"><span class="ic-key">Date récolte</span><span class="ic-val amber">22 Mar
-                                2026</span></div>
-                        <div class="ic-row"><span class="ic-key">Statut</span><span class="ic-val green">🌾
-                                Récolte</span></div>
-                        <div class="ic-row"><span class="ic-key">Responsable</span><span class="ic-val">Mohamed
-                                Alami</span></div>
-                        <div class="ic-row"><span class="ic-key">Rendement prévu</span><span class="ic-val green">1.8
+                        <div class="ic-row"><span class="ic-key">Parcelle</span><span class="ic-val">Parcelle {{strtoupper(str($culture->field->name)->substr(0,1))}} — {{$culture->field->name}}</span></div>
+                        <div class="ic-row"><span class="ic-key">Type</span><span class="ic-val">{{ucfirst($culture->typeCulture->type)}}</span></div>
+                        <div class="ic-row"><span class="ic-key">Cycle</span><span class="ic-val">{{ucfirst($culture->cycle)}}</span></div>
+                        <div class="ic-row"><span class="ic-key">Saison</span><span class="ic-val">{{ucfirst($culture->season)}}{{$culture->planting_date->format('Y')}}</span></div>
+                        <div class="ic-row"><span class="ic-key">Date semis</span><span class="ic-val">{{$culture->planting_date->format('d M Y')}}</span></div>
+                        <div class="ic-row"><span class="ic-key">Date récolte</span><span class="ic-val amber">{{$culture->harvest_date->format('d M Y')}}</span></div>
+                        <div class="ic-row"><span class="ic-key">Responsable</span><span class="ic-val">{{ucfirst($culture->user->name)}}</span></div>
+                        <div class="ic-row"><span class="ic-key">Rendement prévu</span><span class="ic-val green">{{$culture->quantite_prevu}}
                                 t</span></div>
                     </div>
 
@@ -1897,124 +1845,16 @@
                 <form action="{{route('cultures.next', $culture)}}" method="post">
                     @csrf
                     @method('patch')
-                <button type="submit" class="cb-confirm" onclick="advanceStep()">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Confirmer l'avancement
-                </button>
-            </form>
+                    <button type="submit" class="cb-confirm" onclick="advanceStep()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Confirmer l'avancement
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-
-    <script>
-        // ── Stepper logic ──
-const stages = [
-  { label:'🌱 Semis',      next:'⚗️ Traitement', emoji:'🌱' },
-  { label:'⚗️ Traitement', next:'🌿 Croissance', emoji:'⚗️' },
-  { label:'🌿 Croissance', next:'🌾 Récolte',    emoji:'🌿' },
-  { label:'🌾 Récolte',    next:'✅ Terminé',    emoji:'🌾' },
-  { label:'✅ Terminé',    next:null,             emoji:'✅' },
-];
-let currentStep = 3; // Récolte = index 3
-
-function openConfirm() {
-  if (currentStep >= stages.length - 1) return;
-  const cur  = stages[currentStep];
-  const next = stages[currentStep + 1];
-  document.querySelector('.cb-stage:first-child .cb-stage-em').textContent = cur.emoji;
-  document.querySelector('.cb-stage:first-child .cb-stage-lbl').textContent = cur.label + ' (actuel)';
-  document.querySelector('.cb-stage.next-s .cb-stage-em').textContent  = next.emoji;
-  document.querySelector('.cb-stage.next-s .cb-stage-lbl').textContent = next.label + ' (suivant)';
-  document.getElementById('confirmModal').classList.add('open');
-}
-function closeConfirm() { document.getElementById('confirmModal').classList.remove('open'); }
-function closeConfirmBg(e) { if(e.target===document.getElementById('confirmModal')) closeConfirm(); }
-
-function advanceStep() {
-  if (currentStep >= stages.length - 1) return;
-  // Mark old step done
-  const steps = document.querySelectorAll('.step');
-  steps[currentStep].classList.remove('active');
-  steps[currentStep].classList.add('done');
-  steps[currentStep].querySelector('.step-bubble').innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`;
-  // Activate next
-  currentStep++;
-  steps[currentStep].classList.add('active');
-  steps[currentStep].querySelector('.step-bubble').textContent = stages[currentStep].emoji;
-  steps[currentStep].querySelector('.step-label').textContent  = stages[currentStep].label;
-  // Update NSB
-  const nsb = document.querySelector('.nsb-title');
-  if (stages[currentStep].next) {
-    nsb.textContent = stages[currentStep].emoji + ' ' + stages[currentStep].label + ' — Cliquez pour avancer';
-  } else {
-    nsb.textContent = '✅ Cycle terminé — Aucune étape suivante';
-    document.querySelector('.btn-next-step').disabled = true;
-    document.querySelector('.btn-next-step').style.opacity = '.5';
-    document.querySelector('.btn-next-step').style.cursor = 'not-allowed';
-  }
-  closeConfirm();
-}
-
-// ── Checklist (localStorage) ──
-const STORAGE_KEY = 'agrinova_checklist_culture_1';
-function loadChecklist() {
-  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-  document.querySelectorAll('.cl-item').forEach(item => {
-    if (saved[item.dataset.id]) {
-      item.classList.add('checked');
-      item.querySelector('.cl-text').classList.add('done-text');
-    }
-  });
-  updateProgress();
-}
-function toggleCheck(el) {
-  el.classList.toggle('checked');
-  el.querySelector('.cl-text').classList.toggle('done-text');
-  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-  saved[el.dataset.id] = el.classList.contains('checked');
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-  updateProgress();
-}
-function updateProgress() {
-  const total   = document.querySelectorAll('.cl-item').length;
-  const checked = document.querySelectorAll('.cl-item.checked').length;
-  document.getElementById('checkProgress').textContent = checked + ' / ' + total + ' complétés';
-}
-loadChecklist();
-
-// ── Notes (localStorage) ──
-const NOTES_KEY = 'agrinova_notes_culture_1';
-document.getElementById('notesArea').value = localStorage.getItem(NOTES_KEY) || '';
-function saveNotes() {
-  localStorage.setItem(NOTES_KEY, document.getElementById('notesArea').value);
-  const saved = document.getElementById('notesSaved');
-  saved.style.display = 'block';
-  setTimeout(() => saved.style.display = 'none', 2500);
-}
-
-// ── Revenue calculator ──
-function calcRevenue() {
-  const price = parseFloat(document.getElementById('priceInput').value) || 0;
-  const yield_kg = 1800;
-  const revenue = (price * yield_kg).toLocaleString('fr-FR');
-  document.getElementById('revenueDisplay').textContent = revenue + ' DH';
-}
-
-// ── Days left countdown ──
-function calcDaysLeft() {
-  const harvest = new Date('2026-03-22');
-  const today   = new Date();
-  const diff    = Math.ceil((harvest - today) / (1000 * 60 * 60 * 24));
-  const el = document.getElementById('daysLeft');
-  if (el) el.textContent = diff > 0 ? diff : 0;
-}
-calcDaysLeft();
-
-// Keyboard
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeConfirm(); });
-    </script>
 </body>
 
 </html>

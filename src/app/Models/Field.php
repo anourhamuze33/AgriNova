@@ -12,4 +12,9 @@ class Field extends Model
         {
                 return $this->hasMany(Culture::class);
         }
+
+        public function ville()
+        {
+               return $this->belongsTo(Ville::class);
+        }
 }

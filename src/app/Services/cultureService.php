@@ -19,6 +19,11 @@ class CultureService
         return $this->cultureRepository->getAll();
     }
 
+    public function getStats()
+    {
+        return $this->cultureRepository->getStats();
+    }
+
     public function getNameType()
     {
         return $this->cultureRepository->getNameType();
