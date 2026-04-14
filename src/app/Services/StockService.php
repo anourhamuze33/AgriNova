@@ -14,7 +14,7 @@ class StockService
 
         $lots = Culture::with(['typeCulture', 'field', 'user'])
             ->orderBy('harvest_date')
-            ->paginate(10);
+            ->paginate(8);
 
         $lots->setCollection(
             $lots->getCollection()->map(function (Culture $culture) use ($now) {

@@ -1,3 +1,80 @@
+<style>
+    /* ================= PAGINATION ================= */
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 12px;
+}
+
+/* LEFT INFO */
+.pag-info {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* BUTTON WRAPPER */
+.pag-btns {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* BUTTON STYLE */
+.pag-btn {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--forest);
+
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.pag-btn:hover {
+  background: var(--fog);
+}
+
+/* ACTIVE PAGE */
+.pag-btn.cur {
+  background: var(--forest);
+  color: white;
+  border-color: var(--forest);
+}
+
+/* DISABLED */
+.pag-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* DOTS */
+.pag-dots {
+  border: none;
+  background: transparent;
+  width: auto;
+  padding: 0 6px;
+}
+
+/* 🔥 FIX ARROW SIZE (IMPORTANT) */
+.pag-btn svg {
+  width: 14px !important;
+  height: 14px !important;
+  display: block;
+}
+</style>
 @if ($paginator->hasPages())
 <div class="pagination">
  

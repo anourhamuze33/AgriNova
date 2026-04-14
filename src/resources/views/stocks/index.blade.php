@@ -597,7 +597,6 @@
       background: var(--white);
       border: 1.5px solid var(--border);
       border-radius: 18px;
-      overflow: hidden
     }
 
     .thead,
@@ -751,9 +750,7 @@
       border-radius: 20px;
       margin-top: 3px
     }
-    .tcard {
-  display: block;
-}
+
 
     .dt-l {
       background: rgba(184, 74, 30, .1);
@@ -806,6 +803,7 @@
       .trow> :nth-child(n+5) {
         display: none
       }
+      
     }
   </style>
 </head>
@@ -988,38 +986,54 @@
 
         @forelse($lots as $lot)
         <div class="trow">
+
           <div class="ccrop">
-            <div class="cthumb"><img src="{{ $lot['image'] }}" alt="{{ $lot['culture_name'] }}"></div>
+            <div class="cthumb">
+              <img src="{{ $lot['image'] }}">
+            </div>
             <div>
               <div class="cn">{{ $lot['culture_name'] }}</div>
               <div class="cm">{{ $lot['culture_type'] }}</div>
             </div>
           </div>
+
           <div class="cval">{{ $lot['field_name'] }}</div>
+
           <div>
             <div class="cval">{{ $lot['harvest_date']->format('d M Y') }}</div>
-            <span class="dtag {{ $lot['date_badge_class'] }}">{{ $lot['date_badge'] }}</span>
+            <span class="dtag {{ $lot['date_badge_class'] }}">
+              {{ $lot['date_badge'] }}
+            </span>
           </div>
+
           <div class="cval">{{ ucfirst($lot['cycle']) }}</div>
+
           <div>
             @if($lot['days_to_harvest'] < 0) <div class="cval">{{ abs($lot['days_to_harvest']) }} j de retard</div>
           @else
           <div class="cval">{{ $lot['days_to_harvest'] }} j restants</div>
           @endif
         </div>
+
+        <!-- ✅ MUST BE INSIDE -->
         <div>
           <div class="cval">{{ $lot['manager'] }}</div>
           <div class="csub">Gestionnaire</div>
         </div>
-        <div><span class="sbadge {{ $lot['status_class'] }}">{{ $lot['status_label'] }}</span></div>
+
+        <!-- ✅ MUST BE INSIDE -->
+        <div>
+          <span class="sbadge {{ $lot['status_class'] }}">
+            {{ $lot['status_label'] }}
+          </span>
+        </div>
+
       </div>
       @empty
       <div class="empty">Aucun lot disponible pour le moment.</div>
       @endforelse
-    </div>
-    <div style="margin-top:10px;">
+      </div>
       {{ $lots->links('pagination.custom') }}
-    </div>
     </section>
   </main>
 </body>
