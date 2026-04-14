@@ -6,6 +6,7 @@ use App\Http\Controllers\CropController;
 use App\Http\Controllers\CultureController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\FilesController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,6 +16,7 @@ Route::get('/', function () {
 Route::Resource('fields', FieldController::class);
 Route::Resource('crops', CropController::class);
 Route::Resource('cultures', CultureController::class);
+Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
 Route::patch('/cultures/next/{culture}', [CultureController::class, 'suivantEtape'])->name('cultures.next');
 
 Route::get('/register/form', [AuthController::class, 'showRegister'])->name('register.form');
