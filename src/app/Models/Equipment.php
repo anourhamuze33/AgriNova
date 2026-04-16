@@ -16,6 +16,10 @@ class Equipment extends Model
         'purchase_date',
         'purchase_price',
     ];
+    protected $casts = [
+        'purchase_date' => 'date',
+        'purchase_price' => 'decimal:2',
+    ];
 
     public function fields(): BelongsToMany
     {
