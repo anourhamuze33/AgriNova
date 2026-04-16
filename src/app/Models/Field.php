@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Field extends Model
 {
-        protected $fillable = ['name','ville_id','size'];
-        
+        protected $fillable = ['name', 'ville_id', 'size'];
+
         public function cultures()
         {
                 return $this->hasMany(Culture::class);
@@ -15,6 +16,16 @@ class Field extends Model
 
         public function ville()
         {
-               return $this->belongsTo(Ville::class);
+                return $this->belongsTo(Ville::class);
+        }
+
+        public function equipments(): BelongsToMany
+        {
+                return $this->belongsToMany(
+                        Equipment::class,
+                        'equipment_allocations',
+                        'field_id',
+                        'equipment_id'
+                )->withPivot(['start_date', 'end_date']);
         }
 }

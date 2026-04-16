@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CropController;
 use App\Http\Controllers\CultureController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\FilesController;
 use App\Http\Controllers\StockController;
@@ -16,6 +17,7 @@ Route::get('/', function () {
 Route::Resource('fields', FieldController::class);
 Route::Resource('crops', CropController::class);
 Route::Resource('cultures', CultureController::class);
+Route::Resource('equipments', EquipmentController::class);
 Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
 Route::patch('/cultures/next/{culture}', [CultureController::class, 'suivantEtape'])->name('cultures.next');
 
