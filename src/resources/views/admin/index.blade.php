@@ -1339,7 +1339,7 @@
                             l'utilisateur
                         </div>
                         @else
-                        <form action="{{route('acceptOrRefuse', $user)}}" method="POST" class="wc-actions">
+                        <form action="{{route('acceptOrRefuse', $user->id)}}" method="POST" class="wc-actions">
                             @csrf
                             <div class="wc-actions-left">
                                 <div class="wc-note-label">Note administrative (optionnel)</div>
@@ -1426,6 +1426,15 @@ function closeModalOnBg(e) {
   if (e.target === document.getElementById('docModal')) closeModal();
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+let valueType = document.querySelector('#hiddenType');
+const types = document.querySelectorAll('.btnType');
+types.forEach(type => {
+    type.addEventListener('click', (e)=>{        
+        valueType.value = e.target.dataset.type;
+    })
+})
+
     </script>
 </body>
 

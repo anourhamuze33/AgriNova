@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 })->name('index');
-
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::post('/admin/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
+    
 Route::Resource('fields', FieldController::class);
 Route::Resource('crops', CropController::class);
 Route::Resource('cultures', CultureController::class);
@@ -29,8 +31,6 @@ Route::middleware('CheckDemandeApproved')->group(function (){
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-Route::post('/admin/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
 
 
 Route::get('/download/diplome/{fileName}', [FilesController::class, 'downloadDiplome'])->name('file.diplome.download');
