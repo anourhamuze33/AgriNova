@@ -1374,19 +1374,21 @@
           <p class="page-sub">12 cultures actives sur 4 parcelles · Saison Printemps 2026</p>
         </div>
         <div class="page-hdr-right">
-          <a href="/cultures/par-parcelle" class="btn-outline">
+          <a href="{{route('fields.index')}}" class="btn-outline">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
             Par parcelle
           </a>
-          <button class="btn-primary" onclick="openCreate()">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-            Nouvelle culture
-          </button>
+          <a href="{{route('cultures.create')}}">
+            <button class="btn-primary">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Nouvelle culture
+            </button>
+          </a>
         </div>
       </div>
 
@@ -1444,27 +1446,20 @@
         </div>
       </div>
 
-      <!-- Toolbar -->
       <div class="toolbar">
-        <button class="f-tab active" onclick="filterTab('all',this)">Toutes <span class="ft-count">12</span></button>
-        <button class="f-tab" onclick="filterTab('plant',this)">Plantation <span class="ft-count">3</span></button>
-        <button class="f-tab" onclick="filterTab('growth',this)">Croissance <span class="ft-count">5</span></button>
-        <button class="f-tab" onclick="filterTab('treat',this)">Traitement <span class="ft-count">2</span></button>
-        <button class="f-tab" onclick="filterTab('harvest',this)">Recolte <span class="ft-count">2</span></button>
+        <button class="f-tab active" onclick="filterTab('all',this)">Toutes</button>
+        <button class="f-tab" onclick="filterTab('planting',this)">Plantation</button>
+        <button class="f-tab" onclick="filterTab('growth',this)">Croissance</button>
+        <button class="f-tab" onclick="filterTab('treatment',this)">Traitement</button>
+        <button class="f-tab" onclick="filterTab('harvest',this)">Recolte</button>
         <div class="toolbar-right">
           <div class="search-wrap">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <input type="text" placeholder="Rechercher...">
+            <input type="text" id="searchInput" placeholder="Rechercher...">
           </div>
-          <select class="sort-sel">
-            <option>Trier: Plantation</option>
-            <option>Trier: Recolte proche</option>
-            <option>Trier: Progression</option>
-            <option>Trier: Parcelle</option>
-          </select>
         </div>
       </div>
 
@@ -1491,9 +1486,10 @@
 
         $progress = round((($currentIndex + 1) / count($steps)) * 100);
         @endphp
-        <div class="t-row">
+        <div class="t-row" data-cycle="{{ $culture->cycle }}">
           <div class="col-name">
-            <div class="c-thumb"><img src="{{ $culture->typeCulture->imgUrl ? asset('storage/Cultures/' . $culture->typeCulture->imgUrl) :  asset('assets/unknowing.png')}}"
+            <div class="c-thumb"><img
+                src="{{ $culture->typeCulture->imgUrl ? asset('storage/Cultures/' . $culture->typeCulture->imgUrl) :  asset('assets/unknowing.png')}}"
                 alt="{{$culture->typeCulture->name}}"></div>
             <div>
               <div class="c-crop-name">{{$culture->typeCulture->name}}</div>
@@ -1518,37 +1514,37 @@
             <div class="prog-pct">{{ $progress }}%</div>
           </div>
           <div class="col-acts">
-            <button class="a-btn" title="Voir"><svg fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
+            <button class="a-btn" title="Voir"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg></button>
-            <button class="a-btn" title="Modifier" onclick="openEdit(1)"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="a-btn" title="Modifier" onclick="openEdit({{$culture->id}})"><svg fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg></button>
-            <button class="a-btn del" onclick="openDel('Tomates Roma')"><svg fill="none" stroke="currentColor"
-                viewBox="0 0 24 24">
+            <button class="a-btn del" onclick="openDel('{{$culture->typeCulture->name}}')"><svg fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg></button>
           </div>
         </div>
         @endforeach
-        {{ $cultures->links('pagination.custom') }}        
+        {{ $cultures->links('pagination.custom') }}
       </div>
 
     </div>
   </div>
 
   <!-- CRUD MODAL -->
-  <div class="overlay" id="crudModal" onclick="closeCrudBg(event)">
+  <div class="overlay" id="crudModal">
     <div class="modal">
       <div class="m-hdr">
         <div>
-          <h3 id="mTitle">Nouvelle Culture</h3>
+          <h3 id="mTitle">Editer un Culture</h3>
           <p id="mSub">Renseignez tous les champs requis</p>
         </div>
         <div class="m-close" onclick="closeCrud()">
@@ -1648,10 +1644,10 @@
                 </svg></span>
               <select name="season" class="m-inp" required>
                 <option value="">Selectionner la saison</option>
-                <option value="spring">🌸 Printemps</option>
-                <option value="summer">☀️ Ete</option>
-                <option value="autumn">🍂 Automne</option>
-                <option value="winter">❄️ Hiver</option>
+                <option value="spring">Printemps</option>
+                <option value="summer">Ete</option>
+                <option value="autumn">Automne</option>
+                <option value="winter">Hiver</option>
               </select>
             </div>
           </div>
@@ -1701,23 +1697,27 @@
         <div class="sc-grid">
           <label class="sc sel" id="sc1">
             <input type="radio" name="status" value="planting" checked onchange="selStatus(this)">
-            <div class="sc-em">🌱</div>
+            <div class="sc-em"></div>
             <div class="sc-lbl">Plantation</div>
-            <div class="sc-ck"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="sc-ck">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-              </svg></div>
+              </svg>
+            </div>
           </label>
           <label class="sc" id="sc2">
             <input type="radio" name="status" value="growth" onchange="selStatus(this)">
-            <div class="sc-em">🌿</div>
+            <div class="sc-em"></div>
             <div class="sc-lbl">Croissance</div>
-            <div class="sc-ck"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="sc-ck">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-              </svg></div>
+              </svg>
+            </div>
           </label>
           <label class="sc" id="sc3">
             <input type="radio" name="status" value="treatment" onchange="selStatus(this)">
-            <div class="sc-em">⚗️</div>
+            <div class="sc-em"></div>
             <div class="sc-lbl">Traitement</div>
             <div class="sc-ck"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
@@ -1725,7 +1725,7 @@
           </label>
           <label class="sc" id="sc4">
             <input type="radio" name="status" value="harvest" onchange="selStatus(this)">
-            <div class="sc-em">🌾</div>
+            <div class="sc-em"></div>
             <div class="sc-lbl">Recolte</div>
             <div class="sc-ck"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
@@ -1733,7 +1733,7 @@
           </label>
           <label class="sc" id="sc5">
             <input type="radio" name="status" value="done" onchange="selStatus(this)">
-            <div class="sc-em">✅</div>
+            <div class="sc-em"></div>
             <div class="sc-lbl">Termine</div>
             <div class="sc-ck"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
@@ -1782,7 +1782,7 @@
     </div>
   </div>
 
-  <!-- DELETE MODAL -->
+  {{-- modal de la suppresion --}}
   <div class="overlay" id="delModal" onclick="closeDelBg(event)">
     <div class="del-box">
       <div class="del-ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1799,16 +1799,74 @@
   </div>
 
   <script>
-    function openCreate(){document.getElementById('mTitle').textContent='Nouvelle Culture';document.getElementById('mSub').textContent='Renseignez tous les champs';document.getElementById('crudModal').classList.add('open');}
-function openEdit(id){document.getElementById('mTitle').textContent='Modifier la Culture';document.getElementById('mSub').textContent='Culture #00'+id;document.getElementById('crudModal').classList.add('open');}
-function closeCrud(){document.getElementById('crudModal').classList.remove('open');}
-function closeCrudBg(e){if(e.target===document.getElementById('crudModal'))closeCrud();}
-function openDel(n){document.getElementById('delTxt').textContent='La culture "'+n+'" sera definitivement supprimee.';document.getElementById('delModal').classList.add('open');}
-function closeDel(){document.getElementById('delModal').classList.remove('open');}
-function closeDelBg(e){if(e.target===document.getElementById('delModal'))closeDel();}
-function selStatus(r){document.querySelectorAll('.sc').forEach(c=>c.classList.remove('sel'));r.closest('.sc').classList.add('sel');}
-function filterTab(s,b){document.querySelectorAll('.f-tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeCrud();closeDel();}});
+    function openEdit(id){
+      document.getElementById('mSub').textContent='Culture #00'+id;
+      document.getElementById('crudModal').classList.add('open');
+    }
+
+    function closeCrud(){
+      document.getElementById('crudModal').classList.remove('open');
+    }
+
+    const modal = document.getElementById('crudModal');
+    modal.addEventListener('click', function (e) {
+      if (e.target === e.currentTarget) {
+        closeCrud();
+      }
+    });
+
+    function openDel(name){
+      document.getElementById('delTxt').textContent='La culture "'+name+'" sera definitivement supprimee.';
+      document.getElementById('delModal').classList.add('open');
+    }
+
+    function closeDel(){
+      document.getElementById('delModal').classList.remove('open');
+    }
+
+    function closeDelBg(e){
+      if(e.target===document.getElementById('delModal'))closeDel();
+    }
+
+    function selStatus(inputRadio){
+      document.querySelectorAll('.sc').forEach(c=>c.classList.remove('sel'));
+      inputRadio.closest('.sc').classList.add('sel');
+    }
+
+function filterTab(status, btn) {
+  fillters =document.querySelectorAll('.f-tab');
+  fillters.forEach(t => t.classList.remove('active'))
+  btn.classList.add('active');
+
+  const rows = document.querySelectorAll('.t-row');
+
+  rows.forEach(row => {
+    const rowStatus = row.dataset.cycle;
+    
+    if (status === 'all' || rowStatus === status) {
+      row.style.display = 'grid';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+const searchInput = document.getElementById('searchInput');
+
+searchInput.addEventListener('input', function () {
+  const value = this.value.toLowerCase();
+  const rows = document.querySelectorAll('.t-row');
+
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+
+    if (text.includes(value)) {
+      row.style.display = 'grid';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
   </script>
 </body>
 
