@@ -34,4 +34,13 @@ class UserRepository
         $roles = Role::with('users')->get();
         return $roles;
     }
+
+    public function getStatus()
+    {
+        $pending = Demande::where('type', 'be_ouvrier')->where('status', 'pending')->get()->count();
+        $approved = Demande::where('type', 'be_ouvrier')->where('status', 'approved')->get()->count();
+        $rejected = Demande::where('type', 'be_ouvrier')->where('status', 'rejected')->get()->count();
+        $inscrit = Demande::where('type', 'be_ouvrier')->get()->count();
+        return ['pending'=>$pending, 'approved'=>$approved, 'rejected'=>$rejected, 'inscrit'=>$inscrit];
+    }
 }

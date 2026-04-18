@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Repositories\User\UserRepository;
 use App\Services\Demande\demandeService;
 use App\Services\Document\documentService;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class AdminController extends Controller
 {
@@ -24,13 +26,13 @@ class AdminController extends Controller
 
     public function index()
     {
+        $stats = $this->userRepository->getStatus();
         $usersDemanding = $this->userRepository->getAllUsersDemanding();
         foreach ($usersDemanding as $user) {
-
             $user->diplome_info = $this->documentService->getFilesInfos('diplomes', $user->lienDiplome);
             $user->cin_info = $this->documentService->getFilesInfos('cin', $user->lienCIN);
         }
-        return view('admin.index', compact('usersDemanding'));
+        return view('admin.index', compact('usersDemanding', 'stats'));
     }
 
     public function acceptOrRefuse(UpdateDemandeRequest $request, User $user)

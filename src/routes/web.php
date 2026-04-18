@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 })->name('index');
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware('roleMiddelware:Admin');
 Route::post('/admin/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
     
 Route::Resource('fields', FieldController::class);
