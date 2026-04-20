@@ -600,7 +600,7 @@
                     <p>Réseau Agricole Professionnel</p>
                 </div>
             </div>
-            <a href="{{route('register.form')}}" class="login-link">
+            <a href="{{route('login.form')}}" class="login-link">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
                 </svg>
@@ -626,7 +626,6 @@
             </div>
         </div>
 
-        <!-- Card / Form -->
         <div class="card">
             @if ($errors->any())
             <div style="padding: 1.5rem 2rem 0;">
@@ -708,12 +707,9 @@
                             <label class="field-label">Ville <span class="req">*</span></label>
                             <select name="ville_id" class="input">
                                 <option value="">Sélectionner une ville</option>
-                                <option value="1">Casablanca</option>
-                                <option value="2">Rabat</option>
-                                <option value="3">Marrakech</option>
-                                <option value="4">Fès</option>
-                                <option value="5">Tanger</option>
-                                <option value="6">Agadir</option>
+                                @foreach($villes as $ville)
+                                <option value="{{$ville->id}}">{{$ville->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="field-row" id="specialitesField">
@@ -900,7 +896,7 @@
 
         <!-- Footer -->
         <div class="card-footer">
-            Vous avez déjà un compte ? <a href="/login">Se Connecter</a>
+            Vous avez déjà un compte ? <a href="{{route('login.form')}}">Se Connecter</a>
         </div>
 
     </div>

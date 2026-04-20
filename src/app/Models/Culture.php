@@ -6,11 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Culture extends Model
 {
-      protected $fillable = ['field_id', 'type_culture_id', 'cycle','season','planting_date','harvest_date','status','user_id'];
+      protected $fillable = ['field_id', 'type_culture_id', 'cycle','season','planting_date','harvest_date','status','user_id', 'quantite_prevu'];
       protected $casts = ['harvest_date' => 'datetime','planting_date' => 'datetime'];
-      public function crop(){
-            return $this->belongsTo(Crop::class);
-      }
 
       public function field()
       {

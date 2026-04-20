@@ -18,6 +18,11 @@ class FieldService
         return $this->fieldRepository->getAll();
     }
 
+    public function getAllFieldsNotPag()
+    {
+        return $this->fieldRepository->getAllNotPag();
+    }
+
     public function getFieldById($id)
     {
         return $this->fieldRepository->findById($id);

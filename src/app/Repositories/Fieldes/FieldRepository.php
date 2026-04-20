@@ -8,6 +8,11 @@ class FieldRepository
 {
     public function getAll()
     {
+        return Field::with('cultures')->paginate(4);
+    }
+
+    public function getAllNotPag()
+    {
         return Field::with('cultures')->get();
     }
 

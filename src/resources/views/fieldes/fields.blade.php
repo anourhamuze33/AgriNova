@@ -1119,20 +1119,6 @@
         <span class="tb-title">Mes Cultures</span>
       </div>
       <div class="tb-right">
-        <div class="tb-search-wrap">
-          <svg class="tb-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input class="tb-search" type="text" placeholder="Rechercher une culture…">
-        </div>
-        <div class="tb-notif">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-          <span class="notif-dot"></span>
-        </div>
         <a href="{{route('fields.create')}}" class="btn-add">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -1142,44 +1128,6 @@
       </div>
     </div>
 
-    <div class="content">
-
-      <!-- Page header + filters -->
-      <div class="page-hdr">
-        <div class="ph-left">
-          <div class="ph-eyebrow">Saison Printemps 2026</div>
-          <h1 class="ph-title">12 cultures réparties sur<br>4 parcelles</h1>
-          <p class="ph-sub">Suivi des cycles — Semis · Traitement · Croissance · Récolte</p>
-        </div>
-        <div class="filter-row">
-          <div class="filter-chip active">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            Toutes
-          </div>
-          <div class="filter-chip">
-            <span style="width:8px;height:8px;border-radius:50%;background:#c98a12;display:inline-block"></span>
-            Récolte
-          </div>
-          <div class="filter-chip">
-            <span style="width:8px;height:8px;border-radius:50%;background:#4a8c68;display:inline-block"></span>
-            Croissance
-          </div>
-          <div class="filter-chip">
-            <span style="width:8px;height:8px;border-radius:50%;background:#b84a1e;display:inline-block"></span>
-            Traitement
-          </div>
-          <div class="filter-chip">
-            <span style="width:8px;height:8px;border-radius:50%;background:#3b6fd4;display:inline-block"></span>
-            Plantation
-          </div>
-        </div>
-      </div>
-
-      <!-- ════════════════════════
-         PARCELLES
-    ════════════════════════ -->
       @foreach($fields as $field)
       <div class="parcelle-section">
         <div class="ps-header">
@@ -1190,22 +1138,18 @@
               <div class="ps-num">{{strtoupper(str($field->name)->substr(0,1))}}</div>
               <div>
                 <div class="ps-name">Parcelle {{strtoupper(str($field->name)->substr(0,1))}} — {{$field->name}}</div>
-                <div class="ps-meta">4.2 hectares · Zone maraîchère · Irrigation goutte-à-goutte</div>
+                <div class="ps-meta">{{$field->size}} hectares · Zone maraîchère · Irrigation goutte-à-goutte</div>
               </div>
             </div>
             <div class="ps-header-right">
               <div class="ps-stat">
-                <div class="ps-stat-num">4</div>
+                <div class="ps-stat-num">{{$field->cultures->count()}}</div>
                 <div class="ps-stat-lbl">Cultures</div>
               </div>
               <div class="ps-stat-sep"></div>
-              <div class="ps-stat">
-                <div class="ps-stat-num">78%</div>
-                <div class="ps-stat-lbl">Cycle moy.</div>
-              </div>
               <div class="ps-stat-sep"></div>
               <div class="ps-stat">
-                <div class="ps-stat-num">3.2t</div>
+                <div class="ps-stat-num">{{$field->cultures->sum('quantite_prevu')}}t</div>
                 <div class="ps-stat-lbl">Rendement</div>
               </div>
             </div>
@@ -1222,10 +1166,7 @@
               <img src="{{ $culture->typeCulture->imgUrl ? asset('storage/Cultures/' . $culture->typeCulture->imgUrl) :  asset('assets/unknowing.png')}}" alt="{{ $culture->typeCulture->name }}">
               <div class="cc-overlay"></div>
               <div class="cc-cycle cy-harvest">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
-                </svg>
-                Récolte
+                {{$culture->cycle}}
               </div>
               <div class="cc-yield">
                 <div class="cc-yield-num">{{$culture->quantite_prevu}}t</div>
@@ -1241,18 +1182,19 @@
               <div class="cc-progress">
                 <div class="cc-prog-steps">
                   @php
-                  $steps = ['planting', 'growth', 'treatment', 'harvest'];
+                  $steps = ['planting', 'growth', 'treatment', 'harvest', 'done'];
                   $currentIndex = array_search($culture->cycle, $steps);
                   @endphp
                   @foreach($steps as $index => $step)
                   <div class="cc-step @if($index < $currentIndex) done
-                                      @elseif($index === $currentIndex) current 
+                                      @elseif($index === $currentIndex && $index!=4) current 
+                                      @elseif($currentIndex === 4) done
                                       @endif
                               "></div>
                   @endforeach
                 </div>
                 <div class="cc-prog-labels">
-                  <span>Semis</span><span>Trait.</span><span>Crois.</span><span>Récolte</span>
+                  <span>Semis</span><span>Trait.</span><span>Crois.</span><span>Récolte</span><span>Done</span>
                 </div>
               </div>
               <div class="cc-meta-row">
@@ -1273,7 +1215,7 @@
               </div>
             </div>
             <div class="cc-footer">
-              <a href="#" class="cc-action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <a href="{{route('cultures.show', $culture->id)}}" class="cc-action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>Détails</a>
@@ -1298,391 +1240,11 @@
         <div class="ps-summary">
           <div class="ps-sum-chip"><span class="ps-sum-dot dot-harvest"></span>1 en récolte</div>
           <div class="ps-sum-chip"><span class="ps-sum-dot dot-plant"></span>1 en plantation</div>
-          <div class="ps-sum-chip">
-            <svg style="width:11px;height:11px;color:var(--sage)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
-            </svg>
-            Santé parcelle : Bonne
-          </div>
         </div>
       </div>
       @endforeach
-
-      <!-- ════════════════════════
-         PARCELLE B
-    ════════════════════════ -->
-      <div class="parcelle-section">
-        <div class="ps-header">
-          <div class="ps-header-img"
-            style="background-image:url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200&q=80&fit=crop')">
-          </div>
-          <div class="ps-header-overlay"></div>
-          <div class="ps-header-content">
-            <div class="ps-header-left">
-              <div class="ps-num">B</div>
-              <div>
-                <div class="ps-name">Parcelle B — Ouest</div>
-                <div class="ps-meta">6.8 hectares · Zone céréalière · Irrigation pluviale</div>
-              </div>
-            </div>
-            <div class="ps-header-right">
-              <div class="ps-stat">
-                <div class="ps-stat-num">3</div>
-                <div class="ps-stat-lbl">Cultures</div>
-              </div>
-              <div class="ps-stat-sep"></div>
-              <div class="ps-stat">
-                <div class="ps-stat-num">52%</div>
-                <div class="ps-stat-lbl">Cycle moy.</div>
-              </div>
-              <div class="ps-stat-sep"></div>
-              <div class="ps-stat">
-                <div class="ps-stat-num">3.6t</div>
-                <div class="ps-stat-lbl">Rendement</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="culture-grid">
-
-          <!-- Blé dur -->
-          <div class="culture-card">
-            <div class="cc-photo">
-              <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=500&q=80&fit=crop" alt="Blé">
-              <div class="cc-overlay"></div>
-              <div class="cc-cycle cy-growth">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-                Croissance
-              </div>
-              <div class="cc-yield">
-                <div class="cc-yield-num">2.4t</div>
-                <div class="cc-yield-lbl">Prévu</div>
-              </div>
-              <div class="cc-photo-footer">
-                <div class="cc-crop-name">Blé dur Karim</div>
-                <div class="cc-season">Printemps 2026 · Parcelle B</div>
-              </div>
-            </div>
-            <div class="cc-body">
-              <div class="cc-progress">
-                <div class="cc-prog-steps">
-                  <div class="cc-step done"></div>
-                  <div class="cc-step done"></div>
-                  <div class="cc-step current"></div>
-                  <div class="cc-step"></div>
-                </div>
-                <div class="cc-prog-labels"><span>Semis</span><span>Trait.</span><span>Crois.</span><span>Récolte</span>
-                </div>
-              </div>
-              <div class="cc-meta-row">
-                <div class="cc-meta-chip">Saad M.</div>
-                <div class="cc-meta-chip">3.2 ha</div>
-                <div class="cc-meta-chip">Sec</div>
-              </div>
-              <div class="cc-dates">
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Semis</div>
-                  <div class="cc-date-val">05 Nov 2025</div>
-                </div>
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Récolte prévue</div>
-                  <div class="cc-date-val">10 Mai 2026</div>
-                </div>
-              </div>
-            </div>
-            <div class="cc-footer">
-              <a href="#" class="cc-action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>Détails</a>
-              <a href="#" class="cc-action-btn cc-action-primary"><svg fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>Modifier</a>
-            </div>
-          </div>
-
-          <!-- Orge -->
-          <div class="culture-card">
-            <div class="cc-photo">
-              <img src="https://images.unsplash.com/photo-1536657464919-892534f60d6e?w=500&q=80&fit=crop" alt="Orge">
-              <div class="cc-overlay"></div>
-              <div class="cc-cycle cy-growth">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-                Croissance
-              </div>
-              <div class="cc-yield">
-                <div class="cc-yield-num">1.2t</div>
-                <div class="cc-yield-lbl">Prévu</div>
-              </div>
-              <div class="cc-photo-footer">
-                <div class="cc-crop-name">Orge d'hiver</div>
-                <div class="cc-season">Printemps 2026 · Parcelle B</div>
-              </div>
-            </div>
-            <div class="cc-body">
-              <div class="cc-progress">
-                <div class="cc-prog-steps">
-                  <div class="cc-step done"></div>
-                  <div class="cc-step current"></div>
-                  <div class="cc-step"></div>
-                  <div class="cc-step"></div>
-                </div>
-                <div class="cc-prog-labels"><span>Semis</span><span>Trait.</span><span>Crois.</span><span>Récolte</span>
-                </div>
-              </div>
-              <div class="cc-meta-row">
-                <div class="cc-meta-chip">Hamza L.</div>
-                <div class="cc-meta-chip">1.8 ha</div>
-              </div>
-              <div class="cc-dates">
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Semis</div>
-                  <div class="cc-date-val">20 Nov 2025</div>
-                </div>
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Récolte prévue</div>
-                  <div class="cc-date-val">25 Mai 2026</div>
-                </div>
-              </div>
-            </div>
-            <div class="cc-footer">
-              <a href="#" class="cc-action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>Détails</a>
-              <a href="#" class="cc-action-btn cc-action-primary"><svg fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>Modifier</a>
-            </div>
-          </div>
-
-          <!-- Add -->
-          <a href="#" class="culture-card-add">
-            <div class="cca-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-              </svg></div>
-            <div class="cca-label">Ajouter une culture</div>
-          </a>
-
-        </div>
-
-        <div class="ps-summary">
-          <div class="ps-sum-chip"><span class="ps-sum-dot dot-growth"></span>2 en croissance</div>
-          <div class="ps-sum-chip">
-            <svg style="width:11px;height:11px;color:var(--sage)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
-            </svg>
-            Santé parcelle : Très bonne
-          </div>
-        </div>
-      </div>
-
-      <!-- ════════════════════════
-         PARCELLE C
-    ════════════════════════ -->
-      <div class="parcelle-section">
-        <div class="ps-header">
-          <div class="ps-header-img"
-            style="background-image:url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80&fit=crop')">
-          </div>
-          <div class="ps-header-overlay"></div>
-          <div class="ps-header-content">
-            <div class="ps-header-left">
-              <div class="ps-num">C</div>
-              <div>
-                <div class="ps-name">Parcelle C — Sud</div>
-                <div class="ps-meta">3.1 hectares · Zone tubercules · Sous traitement actif</div>
-              </div>
-            </div>
-            <div class="ps-header-right">
-              <div class="ps-stat">
-                <div class="ps-stat-num">2</div>
-                <div class="ps-stat-lbl">Cultures</div>
-              </div>
-              <div class="ps-stat-sep"></div>
-              <div class="ps-stat">
-                <div class="ps-stat-num">35%</div>
-                <div class="ps-stat-lbl">Cycle moy.</div>
-              </div>
-              <div class="ps-stat-sep"></div>
-              <div class="ps-stat">
-                <div class="ps-stat-num">1.6t</div>
-                <div class="ps-stat-lbl">Rendement</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="culture-grid">
-
-          <!-- Pommes de terre -->
-          <div class="culture-card">
-            <div class="cc-photo">
-              <img src="https://images.unsplash.com/photo-1518977676405-a97d9e26d8c3?w=500&q=80&fit=crop"
-                alt="Pommes de terre">
-              <div class="cc-overlay"></div>
-              <div class="cc-cycle cy-treat">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-                Traitement
-              </div>
-              <div class="cc-yield">
-                <div class="cc-yield-num">1.1t</div>
-                <div class="cc-yield-lbl">Prévu</div>
-              </div>
-              <div class="cc-photo-footer">
-                <div class="cc-crop-name">Pommes de terre</div>
-                <div class="cc-season">Printemps 2026 · Parcelle C</div>
-              </div>
-            </div>
-            <div class="cc-body">
-              <div class="cc-progress">
-                <div class="cc-prog-steps">
-                  <div class="cc-step done"></div>
-                  <div class="cc-step current"></div>
-                  <div class="cc-step"></div>
-                  <div class="cc-step"></div>
-                </div>
-                <div class="cc-prog-labels"><span>Semis</span><span>Trait.</span><span>Crois.</span><span>Récolte</span>
-                </div>
-              </div>
-              <div class="cc-meta-row">
-                <div class="cc-meta-chip">Karim B.</div>
-                <div class="cc-meta-chip">2.0 ha</div>
-                <div class="cc-meta-chip" style="background:rgba(184,74,30,.08);color:var(--rust);">⚠ Traitement actif
-                </div>
-              </div>
-              <div class="cc-dates">
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Semis</div>
-                  <div class="cc-date-val">01 Feb 2026</div>
-                </div>
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Récolte prévue</div>
-                  <div class="cc-date-val">20 Juil 2026</div>
-                </div>
-              </div>
-            </div>
-            <div class="cc-footer">
-              <a href="#" class="cc-action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>Détails</a>
-              <a href="#" class="cc-action-btn cc-action-primary"><svg fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>Modifier</a>
-            </div>
-          </div>
-
-          <!-- Carottes -->
-          <div class="culture-card">
-            <div class="cc-photo">
-              <img src="https://images.unsplash.com/photo-1582515073490-39981397c445?w=500&q=80&fit=crop"
-                alt="Carottes">
-              <div class="cc-overlay"></div>
-              <div class="cc-cycle cy-plant">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Plantation
-              </div>
-              <div class="cc-yield">
-                <div class="cc-yield-num">0.5t</div>
-                <div class="cc-yield-lbl">Prévu</div>
-              </div>
-              <div class="cc-photo-footer">
-                <div class="cc-crop-name">Carottes Nantaises</div>
-                <div class="cc-season">Printemps 2026 · Parcelle C</div>
-              </div>
-            </div>
-            <div class="cc-body">
-              <div class="cc-progress">
-                <div class="cc-prog-steps">
-                  <div class="cc-step current"></div>
-                  <div class="cc-step"></div>
-                  <div class="cc-step"></div>
-                  <div class="cc-step"></div>
-                </div>
-                <div class="cc-prog-labels"><span>Semis</span><span>Trait.</span><span>Crois.</span><span>Récolte</span>
-                </div>
-              </div>
-              <div class="cc-meta-row">
-                <div class="cc-meta-chip">Ahmed K.</div>
-                <div class="cc-meta-chip">1.1 ha</div>
-              </div>
-              <div class="cc-dates">
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Semis</div>
-                  <div class="cc-date-val">12 Mar 2026</div>
-                </div>
-                <div class="cc-date-item">
-                  <div class="cc-date-label">Récolte prévue</div>
-                  <div class="cc-date-val">10 Aoû 2026</div>
-                </div>
-              </div>
-            </div>
-            <div class="cc-footer">
-              <a href="#" class="cc-action-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>Détails</a>
-              <a href="#" class="cc-action-btn cc-action-primary"><svg fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>Modifier</a>
-            </div>
-          </div>
-
-          <!-- Add -->
-          <a href="#" class="culture-card-add">
-            <div class="cca-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-              </svg></div>
-            <div class="cca-label">Ajouter une culture</div>
-          </a>
-
-        </div>
-
-        <div class="ps-summary">
-          <div class="ps-sum-chip"><span class="ps-sum-dot dot-treat"></span>1 en traitement</div>
-          <div class="ps-sum-chip"><span class="ps-sum-dot dot-plant"></span>1 en plantation</div>
-          <div class="ps-sum-chip" style="border-color:rgba(184,74,30,.3);color:var(--rust);">
-            <svg style="width:11px;height:11px" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01" />
-            </svg>
-            Attention requise
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /content -->
-  </div><!-- /main -->
-
-  <script>
-    // Filter chip toggle
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-    });
-  });
-  </script>
+      {{ $fields->links('pagination.custom') }}
+    </div>
+  </div>
 </body>
-
 </html>

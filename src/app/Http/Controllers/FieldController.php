@@ -3,17 +3,20 @@ namespace App\Http\Controllers;
 
 use App\Services\CultureService;
 use App\Services\FieldService;
+use App\Services\villeService;
 use Illuminate\Http\Request;
 
 class FieldController extends Controller
 {
     protected $fieldService;
     protected CultureService $cultureService;
+    protected villeService $villeService;
 
-    public function __construct(FieldService $fieldService, CultureService $cultureService)
+    public function __construct(FieldService $fieldService, CultureService $cultureService, villeService $villeService)
     {
         $this->fieldService = $fieldService;
         $this->cultureService = $cultureService;
+        $this->villeService = $villeService;
     }
 
     public function index()
@@ -24,7 +27,8 @@ class FieldController extends Controller
 
     public function create()
     {
-        return view('fieldes.formCreate');
+        $villes = $this->villeService->getAll();
+        return view('fieldes.formCreate', compact('villes'));
     }
 
     public function show($id)

@@ -545,32 +545,9 @@
                         </span>
                         <select name="ville_id" id="location" class="inp" onchange="updatePreview(); syncChips(this.value)" required>
                             <option value="">Sélectionner une ville</option>
-                            <optgroup label="Centre">
-                                <option value="1">Casablanca</option>
-                                <option value="Rabat">Rabat</option>
-                                <option value="Salé">Salé</option>
-                                <option value="Kénitra">Kénitra</option>
-                                <option value="Khémisset">Khémisset</option>
-                            </optgroup>
-                            <optgroup label="Sud">
-                                <option value="Marrakech">Marrakech</option>
-                                <option value="Agadir">Agadir</option>
-                                <option value="El Haouz">El Haouz</option>
-                                <option value="Taroudant">Taroudant</option>
-                                <option value="Ouarzazate">Ouarzazate</option>
-                            </optgroup>
-                            <optgroup label="Nord">
-                                <option value="Tanger">Tanger</option>
-                                <option value="Tétouan">Tétouan</option>
-                                <option value="Al Hoceima">Al Hoceima</option>
-                                <option value="Larache">Larache</option>
-                            </optgroup>
-                            <optgroup label="Est">
-                                <option value="Fès">Fès</option>
-                                <option value="Meknès">Meknès</option>
-                                <option value="Oujda">Oujda</option>
-                                <option value="Taza">Taza</option>
-                            </optgroup>
+                            @foreach($villes as $ville)
+                            <option value="{{$ville->id}}">{{$ville->name}}</option>
+                            @endforeach
                         </select>
                         <span class="ville-flag" id="villeFlag"></span>
                     </div>
@@ -612,7 +589,6 @@
                 </div>
 
                 <div class="or-custom">ou saisir manuellement</div>
-
                 <!-- Custom size input -->
                 <div class="field-group">
                     <label class="f-label" for="size">

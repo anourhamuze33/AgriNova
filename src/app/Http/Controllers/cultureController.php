@@ -34,7 +34,7 @@ class CultureController extends Controller
     public function create()
     {
         $rolesWithUsers = $this->userService->getUsersWithRole();
-        $fields = $this->fieldService->getAllFields();
+        $fields = $this->fieldService->getAllFieldsNotPag();
         $typesNames = $this->cultureService->getNameType();
         return view('cultures.create', compact('typesNames', 'fields', 'rolesWithUsers'));
     }

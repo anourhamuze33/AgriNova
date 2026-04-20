@@ -61,7 +61,7 @@ class CultureService
             $data['imgUrl'] = $fileNameCultures;
         }
         $create = $this->cultureRepository->create($data);
-        $this->updateCulturesImg($create->id, $data['imgUrl']);
+        $this->updateCulturesImg($create->type_culture_id, $data['imgUrl']);
         return $create;
     }
 

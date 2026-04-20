@@ -23,6 +23,10 @@ class loginService
                     ]);
             }
             Auth::login($user);
+            if(!$user->roles()){
+            $user->roles()->attach($user->role_id);
+            }
+
             return redirect()->route('admin.index');
         }
         return back()->withErrors([

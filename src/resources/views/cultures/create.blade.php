@@ -1317,7 +1317,7 @@
                                     </div>
                                     <div>
                                         <div class="upload-title">Deposez votre image ici</div>
-                                        <div class="upload-sub">JPG, PNG ou WebP — Max 5 MB</div>
+                                        <div class="upload-sub">JPG, PNG ou WebP — Max 2 MB</div>
                                     </div>
                                     <label for="imageInput" class="upload-browse">
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1392,7 +1392,9 @@
                                         <select name="field_id" class="inp" onchange="updatePreview()" required>
                                             <option value="">Choisir une parcelle</option>
                                             @foreach($fields as $field)
-                                            <option value="{{$field->id}}">Parcelle {{strtoupper(str($field->name)->substr(0,1))}} — {{$field->name}} ({{$field->size}} ha)</option>
+                                            <option value="{{$field->id}}">Parcelle
+                                                {{strtoupper(str($field->name)->substr(0,1))}} — {{$field->name}}
+                                                ({{$field->size}} ha)</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -1417,7 +1419,20 @@
                                         </select>
                                     </div>
                                 </div>
+                                                                <div class="field">
+                                    <div class="f-lbl"><span>la quantite de recolte prevue en t<span class="req">*</span></span>
+                                    </div>
+                                    <div class="iw">
+                                        <span class="ico"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                            </svg></span>
+                                        <input type="number" name="quantite_prevu" class="inp" onchange="updatePreview()"
+                                            required>
+                                    </div>
+                                </div>
                             </div>
+                            
 
                             <!-- ── DATES ── -->
                             <div class="sec mt">
@@ -1468,7 +1483,7 @@
 
                             <div class="status-grid">
                                 <label class="sc sel" data-s="planting">
-                                    <input type="radio" name="status" value="planting" checked
+                                    <input type="radio" name="cycle" value="planting" checked
                                         onchange="selStatus(this)">
                                     <div class="sc-em">P</div>
                                     <div class="sc-lbl">Plantation</div>
@@ -1479,7 +1494,7 @@
                                         </svg></div>
                                 </label>
                                 <label class="sc" data-s="growth">
-                                    <input type="radio" name="status" value="growth" onchange="selStatus(this)">
+                                    <input type="radio" name="cycle" value="growth" onchange="selStatus(this)">
                                     <div class="sc-em">C</div>
                                     <div class="sc-lbl">Croissance</div>
                                     <div class="sc-sub">En developpement</div>
@@ -1489,7 +1504,7 @@
                                         </svg></div>
                                 </label>
                                 <label class="sc" data-s="treatment">
-                                    <input type="radio" name="status" value="treatment" onchange="selStatus(this)">
+                                    <input type="radio" name="cycle" value="treatment" onchange="selStatus(this)">
                                     <div class="sc-em">T</div>
                                     <div class="sc-lbl">Traitement</div>
                                     <div class="sc-sub">Traitement en cours</div>
@@ -1499,7 +1514,7 @@
                                         </svg></div>
                                 </label>
                                 <label class="sc" data-s="harvest">
-                                    <input type="radio" name="status" value="harvest" onchange="selStatus(this)">
+                                    <input type="radio" name="cycle" value="harvest" onchange="selStatus(this)">
                                     <div class="sc-em">R</div>
                                     <div class="sc-lbl">Recolte</div>
                                     <div class="sc-sub">Pret a recolter</div>
@@ -1509,7 +1524,7 @@
                                         </svg></div>
                                 </label>
                                 <label class="sc" data-s="done">
-                                    <input type="radio" name="status" value="done" onchange="selStatus(this)">
+                                    <input type="radio" name="cycle" value="done" onchange="selStatus(this)">
                                     <div class="sc-em">C</div>
                                     <div class="sc-lbl">Termine</div>
                                     <div class="sc-sub">Cycle complet</div>
@@ -1576,20 +1591,13 @@
                                 Les donnees seront sauvegardees en securite
                             </div>
                             <div class="footer-btns">
-                                <a href="/cultures" class="btn-cancel">
+                                <a href="{{route('cultures.index')}}" class="btn-cancel">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                     Annuler
                                 </a>
-                                <button type="button" class="btn-draft">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                                    </svg>
-                                    Sauvegarder brouillon
-                                </button>
                                 <button type="submit" class="btn-submit">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1620,11 +1628,10 @@
                             <!-- Photo filled -->
                             <img id="previewCardImg" src="" alt=""
                                 style="display:none;width:100%;height:100%;object-fit:cover;">
-                            <div class="preview-overlay" id="previewOverlay" style="display:none;"></div>
-                            <span class="preview-season-badge" id="previewSeason" style="display:none;">🌸
+                            <span class="preview-season-badge" id="previewSeason" style="display:none;">
                                 Printemps</span>
                             <span class="preview-status-badge psb-plant" id="previewStatusBadge"
-                                style="display:none;">🌱 Plantation</span>
+                                style="display:none;">Plantation</span>
                         </div>
                         <div class="preview-info">
                             <div class="preview-crop" id="previewCrop">Nom de la culture</div>
@@ -1656,12 +1663,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="preview-progress">
-                            <div class="pp-head"><span>Avancement du cycle</span><span id="prevPct">0%</span></div>
-                            <div class="pp-bar">
-                                <div class="pp-fill" id="prevBar" style="width:0%"></div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Info box in sidebar -->
@@ -1680,142 +1681,83 @@
             </div><!-- /form-layout -->
 
         </div>
-        
+
     </div>
 
     <script>
-        // Current selected image URL
-let currentImgUrl = '';
+        let currentImgUrl = '';
 
-// Handle file upload
-function handleImage(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      showPreviewImage(e.target.result);
-    };
-    reader.readAsDataURL(input.files[0]);
-    document.querySelectorAll('.crop-preset').forEach(p => p.classList.remove('active'));
-  }
-}
+        function handleImage(input) {
+        if (input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {                                
+            showPreviewImage(e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+        }
 
-// Show image in upload zone + preview card
-function showPreviewImage(url) {
-  currentImgUrl = url;
-  // Upload zone
-  document.getElementById('uploadPlaceholder').style.display = 'none';
-  const preview = document.getElementById('imgPreview');
-  preview.style.display = 'block';
-  document.getElementById('previewImg').src = url;
-  document.getElementById('uploadZone').classList.add('has-img');
-  // Preview card
-  document.getElementById('previewEmpty').style.display = 'none';
-  document.getElementById('previewCardImg').src = url;
-  document.getElementById('previewCardImg').style.display = 'block';
-  document.getElementById('previewOverlay').style.display = 'block';
-  document.getElementById('previewSeason').style.display = '';
-  document.getElementById('previewStatusBadge').style.display = '';
-}
+        function showPreviewImage(url) {
+        currentImgUrl = url;
+        document.getElementById('uploadPlaceholder').style.display = 'none';
+        const preview = document.getElementById('imgPreview');
+        preview.style.display = 'block';
+        document.getElementById('previewImg').src = url;        
+        document.getElementById('uploadZone').classList.add('has-img');
+        document.getElementById('previewEmpty').style.display = 'none';
+        document.getElementById('previewCardImg').src = url;
+        document.getElementById('previewCardImg').style.display = 'block';
+        document.getElementById('previewOverlay').style.display = 'block';
+        document.getElementById('previewSeason').style.display = '';
+        document.getElementById('previewStatusBadge').style.display = '';
+        }
 
-// Remove image
-function removeImage() {
-  currentImgUrl = '';
-  document.getElementById('imageInput').value = '';
-  document.getElementById('uploadPlaceholder').style.display = '';
-  document.getElementById('imgPreview').style.display = 'none';
-  document.getElementById('uploadZone').classList.remove('has-img');
-  document.getElementById('previewEmpty').style.display = '';
-  document.getElementById('previewCardImg').style.display = 'none';
-  document.getElementById('previewOverlay').style.display = 'none';
-  document.getElementById('previewSeason').style.display = 'none';
-  document.getElementById('previewStatusBadge').style.display = 'none';
-  document.querySelectorAll('.crop-preset').forEach(p => p.classList.remove('active'));
-}
+        function removeImage() {
+        currentImgUrl = '';
+        document.getElementById('imageInput').value = '';
+        document.getElementById('uploadPlaceholder').style.display = '';
+        document.getElementById('imgPreview').style.display = 'none';
+        document.getElementById('uploadZone').classList.remove('has-img');
+        document.getElementById('previewEmpty').style.display = '';
+        document.getElementById('previewCardImg').style.display = 'none';
+        document.getElementById('previewOverlay').style.display = 'none';
+        document.getElementById('previewSeason').style.display = 'none';
+        document.getElementById('previewStatusBadge').style.display = 'none';
+        }
 
-// Use preset image
-function usePreset(el, url, label) {
-  document.querySelectorAll('.crop-preset').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  showPreviewImage(url);
-}
+        function selStatus(radio) {
+        document.querySelectorAll('.sc').forEach(c => c.classList.remove('sel'));
+        radio.closest('.sc').classList.add('sel');
+        updatePreview();
+        }
 
-// Status card selection
-function selStatus(radio) {
-  document.querySelectorAll('.sc').forEach(c => c.classList.remove('sel'));
-  radio.closest('.sc').classList.add('sel');
-  updatePreview();
-}
+        const field   = document.querySelector('select[name="field_id"]');
+        const season  = document.querySelector('select[name="season"]');
+        const plant   = document.querySelector('input[name="planting_date"]');
+        const harvest = document.querySelector('input[name="harvest_date"]');
+        const status  = document.querySelector('input[name="cycle"]:checked');
 
-// Season labels
-const seasonLabels = { spring: '🌸 Printemps', summer: '☀️ Ete', autumn: '🍂 Automne', winter: '❄️ Hiver' };
-const statusLabels = { planting: '🌱 Plantation', growth: '🌿 Croissance', treatment: '⚗️ Traitement', harvest: '🌾 Recolte', done: '✅ Termine' };
-const statusClasses = { planting: 'psb-plant', growth: 'psb-growth', treatment: 'psb-treat', harvest: 'psb-harvest', done: 'psb-done' };
-const statusProgress = { planting: 10, growth: 50, treatment: 65, harvest: 85, done: 100 };
+        function updatePreview() {
+        
+        const cropName = crop.options[crop.selectedIndex]?.text || 'Nom de la culture';
+        document.getElementById('previewCrop').textContent = cropName === 'Choisir une culture' ? 'Nom de la culture' : cropName;
 
-const fieldLabels = {
-  1: 'Parcelle A — Nord', 2: 'Parcelle B — Ouest',
-  3: 'Parcelle C — Sud', 4: 'Parcelle D — Est'
-};
-const cycleLabels = {
-  1:'C1-2026', 2:'C2-2026', 3:'C3-2026', 4:'C4-2026', 5:'C5-2026', 6:'C6-2026'
-};
+        const fieldVal = field.value;
+        const fieldEl = document.getElementById('previewField');
+        fieldEl.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' + (fieldVal ? fieldLabels[fieldVal] : 'Parcelle non selectionnee');
 
-function formatDate(dateStr) {
-  if (!dateStr) return '—';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-}
+        const seasonVal = season.value;
+        const sb = document.getElementById('previewSeason');
+        if (seasonVal) { sb.textContent = seasonLabels[seasonVal]; sb.style.display = ''; }
+        else sb.style.display = 'none';
 
-function updatePreview() {
-  const crop    = document.querySelector('select[name="crop_id"]');
-  const field   = document.querySelector('select[name="field_id"]');
-  const season  = document.querySelector('select[name="season"]');
-  const cycle   = document.querySelector('select[name="cycle_id"]');
-  const plant   = document.querySelector('input[name="planting_date"]');
-  const harvest = document.querySelector('input[name="harvest_date"]');
-  const status  = document.querySelector('input[name="stastatus"]:checked');
+        const stVal = status?.value || 'planting';
+        const stBadge = document.getElementById('previewStatusBadge');
+        stBadge.textContent = statusLabels[stVal] || '';
+        stBadge.className = 'preview-status-badge ' + (statusClasses[stVal] || 'psb-plant');
+        if (currentImgUrl) stBadge.style.display = '';
+        }
 
-  // Crop name
-  const cropName = crop.options[crop.selectedIndex]?.text || 'Nom de la culture';
-  document.getElementById('previewCrop').textContent = cropName === 'Choisir une culture' ? 'Nom de la culture' : cropName;
-
-  // Field
-  const fieldVal = field.value;
-  const fieldEl = document.getElementById('previewField');
-  fieldEl.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>' + (fieldVal ? fieldLabels[fieldVal] : 'Parcelle non selectionnee');
-
-  // Season badge
-  const seasonVal = season.value;
-  const sb = document.getElementById('previewSeason');
-  if (seasonVal) { sb.textContent = seasonLabels[seasonVal]; sb.style.display = ''; }
-  else sb.style.display = 'none';
-
-  // Status badge
-  const stVal = status?.value || 'planting';
-  const stBadge = document.getElementById('previewStatusBadge');
-  stBadge.textContent = statusLabels[stVal] || '';
-  stBadge.className = 'preview-status-badge ' + (statusClasses[stVal] || 'psb-plant');
-  if (currentImgUrl) stBadge.style.display = '';
-
-  // Dates
-  document.getElementById('prevPlanting').textContent = formatDate(plant.value);
-  document.getElementById('prevHarvest').textContent  = formatDate(harvest.value);
-
-  // Cycle
-  const cycleVal = cycle.value;
-  document.getElementById('prevCycle').textContent = cycleVal ? cycleLabels[cycleVal] : '—';
-
-  // Status in meta
-  document.getElementById('prevStatus').textContent = statusLabels[stVal] || 'Plantation';
-
-  // Progress
-  const pct = statusProgress[stVal] || 0;
-  document.getElementById('prevPct').textContent = pct + '%';
-  document.getElementById('prevBar').style.width = pct + '%';
-}
-
-// Init
-updatePreview();
     </script>
 </body>
 

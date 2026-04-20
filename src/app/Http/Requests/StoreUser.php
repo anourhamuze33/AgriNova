@@ -26,7 +26,7 @@ class StoreUser extends FormRequest
             'name'              => 'required|string|max:150',
             'email'             => 'required|email|unique:users',
             'user_name'         => 'required|string|max:150|unique:users',
-            'telephone'         => 'required|string|max:20',
+            'telephone'         => 'required|string|max:20|unique:users',
             'ville_id'          => 'required|integer|exists:villes,id',
             'specialite'       => 'required|string|max:150',
             'annees_experience' => 'required|integer|min:0|max:70',

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\EquipmentService;
 use App\Services\FieldService;
-use Illuminate\Support\Carbon;
 
 class EquipmentController extends Controller
 {
