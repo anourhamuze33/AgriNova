@@ -17,7 +17,6 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->mi
 Route::post('/admin/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
     
 Route::Resource('fields', FieldController::class);
-Route::Resource('crops', CropController::class);
 Route::Resource('cultures', CultureController::class);
 Route::Resource('equipments', EquipmentController::class);
 Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');

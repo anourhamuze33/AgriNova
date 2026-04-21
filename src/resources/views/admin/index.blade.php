@@ -1207,29 +1207,6 @@
                 </div>
             </div>
 
-            <!-- Filter bar -->
-            <div class="filter-bar">
-                <button class="filter-tab active" onclick="filterCards('all',this)">
-                    Tous <span class="filter-count">31</span>
-                </button>
-                <button class="filter-tab" onclick="filterCards('pending',this)">
-                    ⏳ En attente <span class="filter-count">5</span>
-                </button>
-                <button class="filter-tab" onclick="filterCards('approved',this)">
-                    ✅ Approuvés <span class="filter-count">23</span>
-                </button>
-                <button class="filter-tab" onclick="filterCards('rejected',this)">
-                    ❌ Refusés <span class="filter-count">3</span>
-                </button>
-                <div class="search-bar">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input type="text" placeholder="Rechercher un utilisateur..." oninput="searchCards(this.value)">
-                </div>
-            </div>
-
             <!-- Workers list -->
             <div class="workers-list" id="workersList">
                 @foreach($usersDemanding as $user)

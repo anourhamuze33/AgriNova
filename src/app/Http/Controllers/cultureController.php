@@ -101,21 +101,20 @@ class CultureController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'crop_id' => 'sometimes|exists:crops,id',
-            'field_id' => 'sometimes|exists:fields,id',
-            'cycle_id' => 'sometimes|in:Semis,Trait,Crois,Récolte',
-            'season' => 'sometimes|in:printemps,été,automne,hiver',
-            'planting_date' => 'sometimes|date',
-            'harvest_date' => 'sometimes|date',
-            'status' => 'sometimes|string',
-            'user_id' => 'sometimes|exists:users,id',
+            'type_culture_id' => 'required|int',
+            'field_id' => 'required|int',
+            'user_id' => 'required|int',
+            'season' => 'required|in:printemps,été,automne,hiver',
+            'quantite_prevu'=>'required',
+            'planting_date'=> 'required|date',
+            'harvest_date' => 'required|date',
+            'cycle' => 'required|in:planting,growth,treatment,harvest,done'
         ]);
     }
 
     public function destroy($id)
     {
-        return response()->json([
-            'deleted' => $this->cultureService->deleteCulture($id)
-        ]);
+            $this->cultureService->deleteCulture($id);
+            return redirect()->route('cultures.index');
     }
 }
