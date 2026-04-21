@@ -1219,7 +1219,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>Détails</a>
-              <a href="#" class="cc-action-btn cc-action-primary"><svg fill="none" stroke="currentColor"
+              <a href="{{ route('cultures.edit', $culture->id) }}" class="cc-action-btn cc-action-primary"><svg fill="none" stroke="currentColor"
                   viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
