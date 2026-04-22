@@ -71,8 +71,13 @@ class User extends Authenticatable
         );
     }
 
-            public function cultures()
-        {
-                return $this->hasMany(Culture::class);
-        }
+    public function cultures()
+    {
+        return $this->hasMany(Culture::class);
+    }
+
+    public function ville()
+    {
+        return $this->belongsTo(Ville::class);
+    }
 }

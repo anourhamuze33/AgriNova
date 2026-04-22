@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUser;
 use App\Services\User\Authentification\inscrireService;
 use App\Services\User\Authentification\loginService;
 use App\Services\villeService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -42,5 +43,14 @@ class AuthController extends Controller
     public function login(loginRequest $request)
     {
         return $this->loginService->login($request);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('index');
     }
 }

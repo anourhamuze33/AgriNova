@@ -10,6 +10,8 @@ use App\Services\FieldService;
 use App\Services\User\userService;
 use Illuminate\Support\Facades\Http;
 
+use function Termwind\style;
+
 class CultureController extends Controller
 {
     protected CultureService $cultureService;
@@ -25,33 +27,37 @@ class CultureController extends Controller
 
     public function index()
     {
+        $style =  asset('css/cultures/index.css');
         $cultures = $this->cultureService->getAllCultures();
         $stats = $this->cultureService->getStats();
-
-        return view('cultures.index', compact('cultures', 'stats'));
+        return view('cultures.index', compact('cultures', 'stats', 'style'));
     }
 
     public function create()
     {
+        $style =  asset('css/cultures/create.css');
         $rolesWithUsers = $this->userService->getUsersWithRole();
         $fields = $this->fieldService->getAllFieldsNotPag();
         $typesNames = $this->cultureService->getNameType();
 
-        return view('cultures.create', compact('typesNames', 'fields', 'rolesWithUsers'));
+        return view('cultures.create', compact('typesNames', 'fields', 'rolesWithUsers', 'style'));
     }
 
     public function edit($id)
     {
+        $style =  asset('css/cultures/edit.css');
         $culture = $this->cultureService->getCulture($id);
         $rolesWithUsers = $this->userService->getUsersWithRole();
         $fields = $this->fieldService->getAllFieldsNotPag();
         $typesNames = $this->cultureService->getNameType();
 
-        return view('cultures.edit', compact('culture', 'typesNames', 'fields', 'rolesWithUsers'));
+        return view('cultures.edit', compact('culture', 'typesNames', 'fields', 'rolesWithUsers', 'style'));
     }
 
     public function show($id)
     {
+        $style =  asset('css/cultures/show.css');
+
         $culture = $this->cultureService->getCulture($id);
         $steps = ['planting', 'treatment', 'growth', 'harvest', 'done'];
 
@@ -96,7 +102,7 @@ class CultureController extends Controller
             default => 'Weather',
         };
 
-        return view('cultures.show', compact('culture', 'daysLeft', 'progress', 'weather', 'advice', 'emoji'));
+        return view('cultures.show', compact('culture', 'daysLeft', 'progress', 'weather', 'advice', 'emoji', 'style'));
     }
 
     public function suivantEtape(Culture $culture)

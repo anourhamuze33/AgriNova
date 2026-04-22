@@ -26,13 +26,15 @@ class AdminController extends Controller
 
     public function index()
     {
+
+        $style =  asset('css/admin/index.css');
         $stats = $this->userRepository->getStatus();
         $usersDemanding = $this->userRepository->getAllUsersDemanding();
         foreach ($usersDemanding as $user) {
             $user->diplome_info = $this->documentService->getFilesInfos('diplomes', $user->lienDiplome);
             $user->cin_info = $this->documentService->getFilesInfos('cin', $user->lienCIN);
         }
-        return view('admin.index', compact('usersDemanding', 'stats'));
+        return view('admin.index', compact('usersDemanding', 'stats', 'style'));
     }
 
     public function acceptOrRefuse(UpdateDemandeRequest $request, User $user)

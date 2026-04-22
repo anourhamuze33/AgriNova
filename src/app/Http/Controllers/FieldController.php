@@ -21,8 +21,9 @@ class FieldController extends Controller
 
     public function index()
     {
+        $style = asset('css/fields/index.css');
         $fields = $this->fieldService->getAllFields();
-        return view('fieldes.fields', compact('fields'));
+        return view('fieldes.fields', compact('fields', 'style'));
     }
 
     public function create()

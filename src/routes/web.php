@@ -2,17 +2,21 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CropController;
 use App\Http\Controllers\CultureController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\FilesController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
 })->name('index');
+
+Route::get('/dashboard', function () {
+    return view('dashbordGlobal');
+})->name('dashboard');
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware('roleMiddelware:Admin');
 Route::post('/admin/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
     
@@ -29,6 +33,10 @@ Route::get('/login/form', [AuthController::class, 'showLogin'])->name('login.for
 Route::middleware('CheckDemandeApproved')->group(function (){
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 
 
