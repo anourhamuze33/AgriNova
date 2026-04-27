@@ -8,6 +8,12 @@ use App\Models\User;
 
 class UserRepository
 {
+    public function findById(int $id)
+    {
+        $user = User::find($id);
+        return $user;
+    }
+    
     public function create(array $data)
     {
         return User::create($data);
@@ -23,9 +29,9 @@ class UserRepository
         return $users;
     }
 
-    public function getDemande(User $user)
+    public function getDemande(User $user )
     {
-        $demand = $user->demandes()->where('type', 'be_ouvrier');
+        $demand = $user->demandes()->where('type', 'be_ouvrier')->first();
         return $demand;
     }
 

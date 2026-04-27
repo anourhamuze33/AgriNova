@@ -9,18 +9,19 @@ use Illuminate\Support\Facades\Auth;
 class userService
 {
     protected UserRepository $userRepository;
+
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
-    public static function getLogedUser()
+
+    public function getLogedUser()
     {
         $user_id = Auth::id();
-        if($user_id)
-            {
-                $user = User::find($user_id);
-                return $user;
-            }
+        if($user_id) {
+             $user = $this->userRepository->findById($user_id);
+             return $user;
+        }
             return;
     }
 
@@ -28,6 +29,21 @@ class userService
     {
         $users = $this->userRepository->getUsersWithRoles();
         return $users;
+    }
+
+    public function getStatus()
+    {
+        return $this->userRepository->getStatus();
+    }
+
+    public function getAllUsersDemanding()
+    {
+        return $this->userRepository->getAllUsersDemanding();
+    }
+
+    public function getDemande($user)
+    {
+        return $this->userRepository->getDemande($user);
     }
 
 }

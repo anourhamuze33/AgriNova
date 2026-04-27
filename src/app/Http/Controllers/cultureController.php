@@ -10,8 +10,6 @@ use App\Services\FieldService;
 use App\Services\User\userService;
 use Illuminate\Support\Facades\Http;
 
-use function Termwind\style;
-
 class CultureController extends Controller
 {
     protected CultureService $cultureService;
@@ -39,6 +37,7 @@ class CultureController extends Controller
         $rolesWithUsers = $this->userService->getUsersWithRole();
         $fields = $this->fieldService->getAllFieldsNotPag();
         $typesNames = $this->cultureService->getNameType();
+        dd($typesNames);
 
         return view('cultures.create', compact('typesNames', 'fields', 'rolesWithUsers', 'style'));
     }

@@ -1573,7 +1573,7 @@
 <body>
   <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar">
-    <a href="{{ route('dashboard') }}" class="sb-logo">
+    <a href="{{ route('cultures.index') }}" class="sb-logo">
       <svg class="sb-logo-svg" viewBox="0 0 48 48" fill="none">
         <circle cx="24" cy="24" r="22" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.18)"
           stroke-width="1.5" />
@@ -1593,10 +1593,6 @@
     </a>
     <div class="sb-nav">
       <div class="sb-sec">Principal</div>
-      <a href="{{ route('dashboard') }}" class="sb-link"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>Dashboard</a>
       <a href="{{ route('cultures.index') }}" class="sb-link"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064" />

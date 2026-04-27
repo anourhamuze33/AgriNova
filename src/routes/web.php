@@ -14,17 +14,29 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::get('/dashboard', function () {
-    return view('dashbordGlobal');
-})->name('dashboard');
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware('roleMiddelware:Admin');
-Route::post('/admin/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
+Route::prefix('admin')->group(function (){
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index')->middleware('roleMiddelware:Admin');
+    Route::post('/acceptRefuse/{user}', [AdminController::class, 'acceptOrRefuse'])->name('acceptOrRefuse');
+
+    Route::get('/show/diplome/{fileName}', [FilesController::class, 'showDiplome'])->name('file.Diplome.show');
+    Route::get('/show/cin/{fileName}', [FilesController::class, 'showCIN'])->name('file.CIN.show');
     
-Route::Resource('fields', FieldController::class);
-Route::Resource('cultures', CultureController::class);
-Route::Resource('equipments', EquipmentController::class);
-Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
-Route::patch('/cultures/next/{culture}', [CultureController::class, 'suivantEtape'])->name('cultures.next');
+    Route::get('/download/diplome/{fileName}', [FilesController::class, 'downloadDiplome'])->name('file.diplome.download');
+    Route::get('/download/cin/{fileName}', [FilesController::class, 'downloadCIN'])->name('file.cin.download');
+})->middleware('authMiddelware');
+
+Route::middleware('authMiddelware')->group(function (){
+    Route::Resource('fields', FieldController::class);
+    Route::Resource('cultures', CultureController::class);
+    Route::Resource('equipments', EquipmentController::class);
+    Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
+    Route::patch('/cultures/next/{culture}', [CultureController::class, 'suivantEtape'])->name('cultures.next');
+    
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 Route::get('/register/form', [AuthController::class, 'showRegister'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -33,15 +45,6 @@ Route::get('/login/form', [AuthController::class, 'showLogin'])->name('login.for
 Route::middleware('CheckDemandeApproved')->group(function (){
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
 
 
-Route::get('/download/diplome/{fileName}', [FilesController::class, 'downloadDiplome'])->name('file.diplome.download');
-Route::get('/show/diplome/{fileName}', [FilesController::class, 'showDiplome'])->name('file.Diplome.show');
-
-Route::get('/show/cin/{fileName}', [FilesController::class, 'showCIN'])->name('file.CIN.show');
-Route::get('/download/cin/{fileName}', [FilesController::class, 'downloadCIN'])->name('file.cin.download');

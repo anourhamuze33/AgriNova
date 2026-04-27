@@ -78,7 +78,7 @@
                                 <span class="wc-meta-dot"></span>
                                 <span>{{$user->ville_id}}</span>
                                 <span class="wc-meta-dot"></span>
-                                <span>Inscrit le 14 Mars 2026</span>
+                                <span>Inscrit le {{$user->created_at->format('d F Y')}}</span>
                             </div>
                         </div>
                         <span class="wc-role-badge role-agri">{{$user->role_id}}</span>

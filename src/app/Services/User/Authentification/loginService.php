@@ -9,28 +9,31 @@ use Illuminate\Support\Facades\Auth;
 
 class loginService
 {
+    protected userService $userService;
+    public function __construct(userService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function login(loginRequest $request)
     {
         $credentials = $request->only('email', 'password');
         $user = User::where('email', $credentials['email'])->first();
 
         if (Auth::attempt($credentials)) {
-            $demande = $user->demandes()->where('type', 'be_ouvrier')->first();
+            $demande = $this->userService->getDemande($user);
             
             if ($demande && $demande->status !== 'approved') {
-                return back()->withErrors([
-                    'email' => 'Votre demande n\'est pas encore approuvée.',
-                    ]);
+                return back()->withErrors(['email' => 'Votre demande n\'est pas encore approuvée.',]);
             }
+
             Auth::login($user);
+
             if(!$user->roles()){
             $user->roles()->attach($user->role_id);
             }
 
             return redirect()->route('admin.index');
         }
-        return back()->withErrors([
-            'email' => 'Email ou mot de passe incorrect.',
-        ]);
+        return back()->withErrors(['email' => 'Email ou mot de passe incorrect.']);
     }
 }

@@ -32,7 +32,7 @@ class AuthController extends Controller
     public function register(StoreUser $request)
     { 
         $this->service->register($request);
-        return redirect()->route('index');
+        return redirect()->route('cultures.index');
     }
 
     public function showLogin()
@@ -42,7 +42,8 @@ class AuthController extends Controller
 
     public function login(loginRequest $request)
     {
-        return $this->loginService->login($request);
+        $this->loginService->login($request);
+        return redirect()->route('cultures.index');
     }
 
     public function logout(Request $request)
@@ -50,7 +51,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->route('index');
     }
 }

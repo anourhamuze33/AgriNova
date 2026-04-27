@@ -15,20 +15,20 @@ class inscrireService
 {
     protected UserRepository $userRepository;
     protected DemandeRepository $demandeRepository;
+
     public function __construct(UserRepository $userRepository, DemandeRepository $demandeRepository)
     {
         $this->userRepository = $userRepository;
         $this->demandeRepository = $demandeRepository;
     }
+    
     public function register(StoreUser $data)
     {
         $fileNameDiplome = null;
         $fileNameCin = null;
 
-
-
         if ($data->cin) {
-            $fileDiplome = $data->file('diplome');
+            $fileDiplome = $data->file('ponne');
             $fileNameDiplome = time() . '_Diplome_' . $fileDiplome->getClientOriginalName();
             $fileDiplome->storeAs('diplomes', $fileNameDiplome);
         }
@@ -45,14 +45,16 @@ class inscrireService
         $dto['password'] = Hash::make($dto['password']);
 
         $user = $this->userRepository->create($dto);
-        $this->demandeRepository->create([
+        $demandeData = [
             'name' => $user->name,
             'description' => 'become ouvrier',
             'type' => 'be_ouvrier',
             'status' => 'pending',
             'user_id' => $user->id,
             'notes' => 'be Ouvrier',
-        ]);
+        ];
+        $this->demandeRepository->create($demandeData);
+
         return $user;
     }
 }
