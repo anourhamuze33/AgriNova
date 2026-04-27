@@ -42,7 +42,6 @@ class CultureService
     public function nextStep($culture)
     {
         $steps = ['planting', 'treatment', 'growth', 'harvest', 'done'];
-
         $currentIndex = array_search($culture->cycle, $steps);
 
         if ($currentIndex < count($steps) - 1) {
@@ -54,12 +53,14 @@ class CultureService
     public function createCulture($request)
     {
         $data = $request->validated();
+
         if ($request->hasFile('img')) {
             $fileImg = $request->file('img');
             $fileNameCultures = time() . '_Cultures_' . $fileImg->getClientOriginalName();
             $fileImg->storeAs('Cultures', $fileNameCultures, 'public');
             $data['imgUrl'] = $fileNameCultures;
         }
+        
         $create = $this->cultureRepository->create($data);
         $this->updateCulturesImg($create->type_culture_id, $data['imgUrl']);
         return $create;

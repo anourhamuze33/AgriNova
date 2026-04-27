@@ -300,7 +300,7 @@
                                 <div class="wc-temp">{{ round($weather['main']['temp']) }}°C</div>
                                 <div class="wc-desc">{{ ucfirst($weather['weather'][0]['description']) }}</div>
                             </div>
-                            <div class="wc-emoji">{{ $emoji }}</div>
+                            <div class="wc-emoji">{!! $emoji !!}</div>
                         </div>
                         <div class="wc-grid">
                             <div class="wc-item">
