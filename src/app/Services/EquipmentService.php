@@ -50,11 +50,9 @@ class EquipmentService
     public function status($status)
     {
         $s = strtolower(trim((string) $status));
-
         if ($s === 'available') return ['label' => 'Disponible', 'class' => 'st-op'];
         if ($s === 'using') return ['label' => 'En utilisation', 'class' => 'st-use'];
         if ($s === 'maintenance') return ['label' => 'Maintenance', 'class' => 'st-mnt'];
-
         return ['label' => ucfirst((string) $status), 'class' => 'st-idle'];
     }
 }

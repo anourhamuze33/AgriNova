@@ -32,7 +32,7 @@ class EquipmentController extends Controller
 
         $counts['operational'] = $counts['available'] + $counts['using'];
 
-        return view('equipment.index', ['equipments' => $equipments, 'stats' => $counts, 'typeMeta' => $typeMeta, 'statusMeta' => $statusMeta,]);
+        return view('equipment.index', ['equipments' => $equipments, 'stats' => $counts, 'typeMeta' => $typeMeta, 'statusMeta' => $statusMeta]);
     }
 
     public function create()

@@ -38,9 +38,7 @@ class EquipmentRepository
     public function removeFromField($equipmentId, $fieldId)
     {
         $equipment = Equipment::findOrFail($equipmentId);
-
         $equipment->fields()->detach($fieldId);
-
         return $equipment->load('fields');
     }
 }
