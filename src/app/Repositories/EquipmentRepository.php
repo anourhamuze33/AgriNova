@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Equipment;
+use App\Models\Field;
 
 class EquipmentRepository
 {
@@ -13,7 +14,15 @@ class EquipmentRepository
 
     public function find($id)
     {
-        return Equipment::with(['fields'])->findOrFail($id);
+        return Equipment::with(['fields.cultures', 'fields.ville'])->findOrFail($id);
+    }
+
+    public function getAvailableFieldsForEquipment($equipmentId)
+    {
+        return Field::with(['cultures', 'ville'])
+            ->whereDoesntHave('equipments', function ($query) use ($equipmentId) {
+                $query->where('equipments.id', $equipmentId);
+            })->get();
     }
 
     public function create(array $data)
@@ -24,21 +33,30 @@ class EquipmentRepository
     public function assignToField($equipmentId, $fieldId, $startDate = null, $endDate = null)
     {
         $equipment = Equipment::findOrFail($equipmentId);
-
-        $equipment->fields()->attach($fieldId, [
+        $payload = [
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'created_at' => now(),
             'updated_at' => now(),
-        ]);
+        ];
 
-        return $equipment->load('fields');
+        if ($equipment->fields()->where('fields.id', $fieldId)->exists()) {
+            $equipment->fields()->updateExistingPivot($fieldId, $payload);
+        } else {
+            $equipment->fields()->attach($fieldId, $payload + ['created_at' => now()]);
+        }
+
     }
 
     public function removeFromField($equipmentId, $fieldId)
     {
         $equipment = Equipment::findOrFail($equipmentId);
         $equipment->fields()->detach($fieldId);
-        return $equipment->load('fields');
+        return $equipment->load(['fields.cultures', 'fields.ville']);
+    }
+
+    public function delete($id)
+    {
+        $equipment = Equipment::findOrFail($id);
+        return $equipment->delete();
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\EquipmentRepository;
-use Illuminate\Support\Carbon;
 
 class EquipmentService
 {
@@ -16,6 +15,31 @@ class EquipmentService
     public function getEquipments()
     {
         return $this->equipmentRepository->getAll();
+    }
+
+    public function getEquipmentById($id)
+    {
+        return $this->equipmentRepository->find($id);
+    }
+
+    public function getAvailableFieldsForEquipment($equipmentId)
+    {
+        return $this->equipmentRepository->getAvailableFieldsForEquipment($equipmentId);
+    }
+
+    public function assignEquipmentToField($equipmentId, $fieldId, $startDate = null, $endDate = null)
+    {
+         $this->equipmentRepository->assignToField($equipmentId, $fieldId, $startDate, $endDate);
+    }
+
+    public function removeEquipmentFromField($equipmentId, $fieldId)
+    {
+        return $this->equipmentRepository->removeFromField($equipmentId, $fieldId);
+    }
+
+    public function deleteEquipment($id)
+    {
+        return $this->equipmentRepository->delete($id);
     }
 
     public function typeEquipement($type)
@@ -49,10 +73,10 @@ class EquipmentService
 
     public function status($status)
     {
-        $s = strtolower(trim((string) $status));
+        $s = strtolower(trim($status));
         if ($s === 'available') return ['label' => 'Disponible', 'class' => 'st-op'];
         if ($s === 'using') return ['label' => 'En utilisation', 'class' => 'st-use'];
         if ($s === 'maintenance') return ['label' => 'Maintenance', 'class' => 'st-mnt'];
-        return ['label' => ucfirst((string) $status), 'class' => 'st-idle'];
+        return ['label' => ucfirst($status), 'class' => 'st-idle'];
     }
 }

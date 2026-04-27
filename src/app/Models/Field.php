@@ -9,6 +9,11 @@ class Field extends Model
 {
         protected $fillable = ['name', 'ville_id', 'size'];
 
+        public function getLocationAttribute()
+        {
+                return $this->ville->name;
+        }
+
         public function cultures()
         {
                 return $this->hasMany(Culture::class);

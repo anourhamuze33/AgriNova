@@ -28,6 +28,8 @@ Route::prefix('admin')->group(function (){
 Route::middleware('authMiddelware')->group(function (){
     Route::Resource('fields', FieldController::class);
     Route::Resource('cultures', CultureController::class);
+    Route::post('/equipments/{equipment}/assign-field', [EquipmentController::class, 'assignField'])->name('equipments.assignField');
+    Route::delete('/equipments/{equipment}/fields/{field}', [EquipmentController::class, 'removeField'])->name('equipments.removeField');
     Route::Resource('equipments', EquipmentController::class);
     Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
     Route::patch('/cultures/next/{culture}', [CultureController::class, 'suivantEtape'])->name('cultures.next');
@@ -45,6 +47,5 @@ Route::get('/login/form', [AuthController::class, 'showLogin'])->name('login.for
 Route::middleware('CheckDemandeApproved')->group(function (){
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
-
 
 

@@ -48,22 +48,4 @@ class FieldController extends Controller
         $field = $this->fieldService->createField($data);
         return redirect()->route('fields.index');
     }
-
-    public function update(Request $request, $id)
-    {
-        $data = $request->validate([
-            'name' => 'sometimes|string',
-            'location' => 'sometimes|string',
-            'size' => 'sometimes|numeric',
-        ]);
-
-        $field = $this->fieldService->updateField($id, $data);
-
-    }
-
-    public function destroy($id)
-    {
-        $this->fieldService->deleteField($id);
-
-    }
 }

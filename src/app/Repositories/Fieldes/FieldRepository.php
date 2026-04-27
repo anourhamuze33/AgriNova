@@ -8,17 +8,17 @@ class FieldRepository
 {
     public function getAll()
     {
-        return Field::with('cultures')->paginate(4);
+        return Field::with(['cultures', 'ville'])->paginate(4);
     }
 
     public function getAllNotPag()
     {
-        return Field::with('cultures')->get();
+        return Field::with(['cultures', 'ville'])->get();
     }
 
     public function findById($id)
     {
-        return Field::findOrFail($id);
+        return Field::with(['cultures', 'ville'])->findOrFail($id);
     }
 
     public function create(array $data)

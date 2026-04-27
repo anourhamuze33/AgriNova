@@ -9,7 +9,7 @@ use App\Services\Demande\demandeService;
 use App\Services\Document\documentService;
 use App\Services\User\userService;
 use Illuminate\Container\Attributes\Auth;
-
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class AdminController extends Controller
 {

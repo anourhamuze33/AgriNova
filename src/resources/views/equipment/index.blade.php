@@ -1786,7 +1786,7 @@
             </div>
 
             @forelse($equipments as $equipment)
-            <div class="trow" onclick="openEdit({{ $equipment->id }})">
+            <div class="trow" onclick="window.location='{{ route('equipments.show', $equipment->id) }}'">
               <div class="ce-name">
                 <div class="e-icon"></div>
                 <div>
@@ -1819,7 +1819,7 @@
                 <div class="ce-date-sub">{{ $statusMeta($equipment->status)['label'] }}</div>
               </div>
               <div class="ce-acts" onclick="event.stopPropagation()">
-                <button class="abtn" title="Voir" onclick="openEdit({{ $equipment->id }})"><svg fill="none"
+                <button class="abtn" title="Voir" onclick="window.location='{{ route('equipments.show', $equipment->id) }}'"><svg fill="none"
                     stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1885,7 +1885,7 @@
               </div>
               <div class="eq-card-footer">
                 <div class="eq-card-acts">
-                  <button class="abtn" onclick="openEdit({{ $equipment->id }})"><svg fill="none" stroke="currentColor"
+                  <button class="abtn" onclick="window.location='{{ route('equipments.show', $equipment->id) }}'"><svg fill="none" stroke="currentColor"
                       viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
