@@ -15,10 +15,12 @@ class ProfileController extends Controller
 
     public function show()
     {
+        $style = asset('css/profile.css');
         $id = Auth::id();
-        $user = User::find($id);        $villes = $this->villeService->getAll();
+        $user = User::find($id);        
+        $villes = $this->villeService->getAll();
 
-        return view('profile.show', compact('user', 'villes'));
+        return view('profile.show', compact('user', 'villes', 'style'));
     }
 
     public function update(ProfileUpdateRequest $request)
@@ -26,8 +28,6 @@ class ProfileController extends Controller
         $id = Auth::id();
         $user = User::find($id);
         $user->update($request->validated());
-        $user->refresh();
-
         return redirect()->route('profile.show');
     }
 }

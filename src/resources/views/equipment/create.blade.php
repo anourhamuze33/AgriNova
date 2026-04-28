@@ -83,7 +83,7 @@
   <div class="form-container">
     <h1>Ajouter un équipement</h1>
 
-    <form action="#" method="POST">
+    <form action="" method="POST">
       @csrf
 
       <!-- NAME -->
@@ -131,11 +131,6 @@
         <select name="field_id">
           <option value="">-- Aucune --</option>
 
-          @foreach($fields as $field)
-          <option value="{{ $field->id }}">
-            {{ $field->name }}
-          </option>
-          @endforeach
 
         </select>
       </div>

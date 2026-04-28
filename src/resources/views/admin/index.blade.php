@@ -165,7 +165,7 @@
                     <textarea class="wc-note" name="note"
                         placeholder="Ajouter une remarque sur ce dossier..."></textarea>
                 </div>
-                <input type="hidden" name="type" id="hiddenType" value="">
+                <input type="hidden" name="type" class="hiddenType" value="">
                 <div class="wc-actions-right">
                     <button type="submit" class="btn-reject btnType" data-type="rejected">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

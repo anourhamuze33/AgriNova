@@ -102,9 +102,9 @@ textarea{min-height:90px;resize:vertical}
         <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);font-weight:700;">Equipement agricole</div>
         <h1 class="hero-title">{{ $equipement->name }}</h1>
         <div class="hero-meta">
-          <span>Ref. EQ-{{ str_pad($equipement->id, 3, '0', STR_PAD_LEFT) }}</span>
+          <span></span>
           <span>Achat: {{ $equipement->purchase_date->format('d M Y') }}</span>
-          <span>{{ number_format((float) $equipement->purchase_price, 0, ',', ' ') }} DH</span>
+          <span>{{ number_format( $equipement->purchase_price, 0, ',', ' ') }} DH</span>
         </div>
       </div>
 
@@ -140,7 +140,7 @@ textarea{min-height:90px;resize:vertical}
             </div>
             <div class="card">
               <div class="label">Prix d'achat</div>
-              <div class="value">{{ number_format((float) $equipement->purchase_price, 0, ',', ' ') }} DH</div>
+              <div class="value">{{ number_format($equipement->purchase_price, 0, ',', ' ') }} DH</div>
             </div>
             <div class="card">
               <div class="label">Parcelles assignees</div>
@@ -165,9 +165,6 @@ textarea{min-height:90px;resize:vertical}
                     <p class="field-name">{{ $field->name }}</p>
                     <div class="field-meta">
                       {{ $field->location }} · {{ $field->size }} ha · {{ $field->cultures->count() }} culture(s)
-                      @if (!empty($field->pivot->start_date))
-                        · Depuis {{ \Carbon\Carbon::parse($field->pivot->start_date)->format('d M Y') }}
-                      @endif
                     </div>
                   </div>
 

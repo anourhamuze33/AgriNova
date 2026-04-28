@@ -44,8 +44,6 @@ Route::get('/register/form', [AuthController::class, 'showRegister'])->name('reg
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/login/form', [AuthController::class, 'showLogin'])->name('login.form');
-Route::middleware('CheckDemandeApproved')->group(function (){
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-});
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 

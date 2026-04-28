@@ -19,6 +19,7 @@ class EquipmentController extends Controller
 
     public function index()
     {
+        $style = asset('css/eq/index.css');
         $equipments = $this->equipmentService->getEquipments();
         $typeMeta = fn($type) => $this->equipmentService->typeEquipement($type);
         $statusMeta = fn($status) => $this->equipmentService->status($status);
@@ -33,7 +34,7 @@ class EquipmentController extends Controller
 
         $counts['operational'] = $counts['available'] + $counts['using'];
 
-        return view('equipment.index', ['equipments' => $equipments, 'stats' => $counts, 'typeMeta' => $typeMeta, 'statusMeta' => $statusMeta]);
+        return view('equipment.index', ['equipments' => $equipments, 'stats' => $counts, 'typeMeta' => $typeMeta, 'statusMeta' => $statusMeta, 'style'=>$style]);
     }
 
     public function create()

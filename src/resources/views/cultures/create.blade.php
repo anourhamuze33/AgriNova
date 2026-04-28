@@ -431,7 +431,6 @@
                 </div>
             </div>
 @endsection
-
     <script>
         let currentImgUrl = '';
 

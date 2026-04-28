@@ -21,14 +21,14 @@ class inscrireService
         $this->userRepository = $userRepository;
         $this->demandeRepository = $demandeRepository;
     }
-    
+
     public function register(StoreUser $data)
     {
         $fileNameDiplome = null;
         $fileNameCin = null;
 
         if ($data->cin) {
-            $fileDiplome = $data->file('ponne');
+            $fileDiplome = $data->file('diplome');
             $fileNameDiplome = time() . '_Diplome_' . $fileDiplome->getClientOriginalName();
             $fileDiplome->storeAs('diplomes', $fileNameDiplome);
         }

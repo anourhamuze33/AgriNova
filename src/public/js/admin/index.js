@@ -15,10 +15,14 @@
 }
 
 
-let valueType = document.querySelector('#hiddenType');
-const types = document.querySelectorAll('.btnType');
-types.forEach(type => {
-    type.addEventListener('click', (e)=>{        
-        valueType.value = e.target.dataset.type;
-    })
-})
+document.addEventListener('DOMContentLoaded', () => {
+    let valueType = document.querySelector('.hiddenType');
+    const types = document.querySelectorAll('.btnType');
+
+    types.forEach(type => {
+        type.addEventListener('click', (e)=>{        
+            valueType.value = e.target.dataset.type;
+            console.log("clicked");
+        });
+    });
+});
